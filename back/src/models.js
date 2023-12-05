@@ -3,9 +3,14 @@ const {sequelize, DataTypes, QueryTypes, transact}=require('./provider')
 
 
 const Region=sequelize.define('region', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     code: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        unique: true
     },
     libelle:{
         type: DataTypes.STRING,
@@ -17,9 +22,14 @@ const Region=sequelize.define('region', {
 
 
 const Mois=sequelize.define('mois', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     code: {
         type: DataTypes.STRING,
-        primaryKey: true
+        unique: true
     },
     libelle:{
         type: DataTypes.STRING,
@@ -32,9 +42,14 @@ const Mois=sequelize.define('mois', {
 
 
 const Semaine=sequelize.define('semaine', {
-    code: {
+    id:{
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+    code: {
+        type: DataTypes.STRING,
+        unique: true
     },
     libelle:{
         type: DataTypes.STRING,
@@ -46,9 +61,14 @@ const Semaine=sequelize.define('semaine', {
 
 
 const Type_releve=sequelize.define('type_releve', {
-    code: {
+    id:{
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+    code: {
+        type: DataTypes.STRING,
+        unique: true
     },
     libelle:{
         type: DataTypes.STRING,
@@ -60,9 +80,14 @@ const Type_releve=sequelize.define('type_releve', {
 
 
 const Superviseur=sequelize.define('superviseur', {
-    code: {
+    id:{
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+    code: {
+        type: DataTypes.STRING,
+        unique: true
     },
     nom_prenom:{
         type: DataTypes.STRING,
@@ -80,9 +105,14 @@ const Superviseur=sequelize.define('superviseur', {
 
 
 const Enqueteur=sequelize.define('enqueteur', {
-    code: {
+    id:{
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+    code: {
+        type: DataTypes.STRING,
+        unique: true
     },
     nom_prenom:{
         type: DataTypes.STRING,
@@ -100,9 +130,14 @@ const Enqueteur=sequelize.define('enqueteur', {
 
 
 const Type_point_vente=sequelize.define('type_point_vente', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     code: {
         type: DataTypes.STRING,
-        primaryKey: true
+        unique: true
     },
     libelle:{
         type: DataTypes.STRING,
@@ -114,13 +149,18 @@ const Type_point_vente=sequelize.define('type_point_vente', {
 
 
 const Commune=sequelize.define('commune', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     code: {
         type: DataTypes.STRING,
-        primaryKey: true
+        unique: 'y'
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: 'x'
     },
     region:{
         type: DataTypes.INTEGER,
@@ -136,9 +176,14 @@ const Commune=sequelize.define('commune', {
 
 
 const Point_vente=sequelize.define('point_vente', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     code: {
         type: DataTypes.STRING,
-        primaryKey: true
+        unique: 'keyp'
     },
     libelle:{
         type: DataTypes.STRING
