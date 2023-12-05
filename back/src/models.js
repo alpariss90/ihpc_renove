@@ -10,11 +10,13 @@ const Region=sequelize.define('region', {
     },
     code: {
         type: DataTypes.INTEGER,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     }
 },{
     freezeTableName: true
@@ -29,11 +31,13 @@ const Mois=sequelize.define('mois', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     }
 },{
     freezeTableName: true
@@ -49,11 +53,13 @@ const Semaine=sequelize.define('semaine', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     }
 },{
     freezeTableName: true
@@ -68,11 +74,13 @@ const Type_releve=sequelize.define('type_releve', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     }
 },{
     freezeTableName: true
@@ -87,10 +95,12 @@ const Superviseur=sequelize.define('superviseur', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     nom_prenom:{
         type: DataTypes.STRING,
+        allowNull: false
     },
     region:{
         type: DataTypes.INTEGER,
@@ -112,10 +122,12 @@ const Enqueteur=sequelize.define('enqueteur', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     nom_prenom:{
         type: DataTypes.STRING,
+        allowNull: false
     },
     region:{
         type: DataTypes.INTEGER,
@@ -137,11 +149,13 @@ const Type_point_vente=sequelize.define('type_point_vente', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
     }
 },{
     freezeTableName: true
@@ -156,11 +170,13 @@ const Commune=sequelize.define('commune', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: 'y'
+        unique: 'y',
+        allowNull: false
     },
     libelle:{
         type: DataTypes.STRING,
-        unique: 'x'
+        unique: 'x',
+        allowNull: false
     },
     region:{
         type: DataTypes.INTEGER,
@@ -183,10 +199,12 @@ const Point_vente=sequelize.define('point_vente', {
     },
     code: {
         type: DataTypes.STRING,
-        unique: 'keyp'
+        unique: 'keyp',
+        allowNull: false
     },
     libelle:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     commune:{
         type: DataTypes.STRING,
