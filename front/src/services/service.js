@@ -28,5 +28,11 @@ export default {
     },
     getAllPointVente(){
         return API().get('point_vente/liste')
+    },
+    getAllSection(){
+        return API().get('section/liste')
+    },
+    getAllVariete(){
+        return API().get('variete/liste')
     }
 }

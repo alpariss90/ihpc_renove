@@ -1,4 +1,6 @@
-const {Region, Mois, Type_releve, Semaine, Superviseur, Enqueteur, Type_point_vente, Point_vente, Commune, sequelize, QueryTypes}=require('../models')
+const {Region, Mois, Type_releve, Semaine, Superviseur, 
+    Enqueteur, Type_point_vente, Point_vente, Commune,
+     sequelize, QueryTypes, Section, Variete, Datas}=require('../models')
 
 
 module.exports={
@@ -85,6 +87,33 @@ module.exports={
         } catch (error) {
             console.log("addPointVente point_vente ", error);
             res.status(404).send({error: 'point_vente existe déja '+error})
+        }
+    },
+    async addSection(req, res){
+        try {
+            const section=await Section.bulkCreate(req.body)
+            res.send({success: 'sections succefly added'})
+        } catch (error) {
+            console.log("addSection sections ", error);
+            res.status(404).send({error: 'sections existe déja '+error})
+        }
+    },
+    async addVariete(req, res){
+        try {
+            const variete=await Variete.bulkCreate(req.body)
+            res.send({success: 'variete succefly added'})
+        } catch (error) {
+            console.log("addVariete variete ", error);
+            res.status(404).send({error: 'varietes existe déja '+error})
+        }
+    },
+    async addDatas(req, res){
+        try {
+            const datas=await Datas.bulkCreate(req.body)
+            res.send({success: 'datas succefly added'})
+        } catch (error) {
+            console.log("addDatas datas ", error);
+            res.status(404).send({error: 'datas existe déja '+error})
         }
     },
     async getAllMois(req, res){
@@ -178,6 +207,27 @@ module.exports={
         } catch (error) {
             console.log('Error getAllPointVente  '+error);
             res.status(404).send({error: 'Error getAllPointVente '+error})
+        }
+    },
+    async getAllSection(req, res){
+        try {
+            const sections=await Section.findAll()
+            return res.send({sections: sections})
+        } catch (error) {
+            console.log("Erreur getAllSection ", error);
+            return res.status(404).send({error: 'Error getAllSection '+error})        
+        }
+    },
+    async getAllVariete(req, res){
+        try {
+            const varietes=await sequelize.query("SELECT e.code, e.libelle_court, e.libelle_long, e.section, c.libelle as libelle_section from variete e join section c on c.code=e.section order by e.section, e.code",{
+                replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({varietes: varietes})
+        } catch (error) {
+            console.log('Error getAllVariete  '+error);
+            res.status(404).send({error: 'Error getAllVariete '+error})
         }
     }
 

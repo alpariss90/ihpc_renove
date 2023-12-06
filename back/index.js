@@ -11,8 +11,11 @@ const cookieParser = require('cookie-parser')
 const app=express()
 
 
-app.use(bodyParser.json())
+//app.use(bodyParser.json())
 //app.use(morgan('combined'))
+
+app.use(express.json({limit : '50mb',extended : true}))
+app.use(express.urlencoded({limit : '50mb',extended : true}))
 app.use(cors())
 app.use(cookieParser());
 app.use((req, res, next)=>{
@@ -35,7 +38,7 @@ app.use(session({
 require('./src/route')(app)
    
   
-//sequelize.sync({alter: true});
+sequelize.sync({alter: true});
 
   
 app.listen(config.app_port, (err)=>{
