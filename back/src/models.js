@@ -230,5 +230,5 @@ Unite.hasMany(Matiere, {foreignKey: 'unite'})
 
 
 module.exports={
-    Region, Mois, Type_releve, Semaine, Superviseur, Enqueteur, Type_point_vente, Point_vente, Commune
+    Region, Mois, Type_releve, Semaine, Superviseur, Enqueteur, Type_point_vente, Point_vente, Commune, sequelize, QueryTypes
 }

@@ -86,7 +86,103 @@ module.exports={
             console.log("addPointVente point_vente ", error);
             res.status(404).send({error: 'point_vente existe déja '+error})
         }
+    },
+    async getAllMois(req, res){
+        try {
+            const mois=await Mois.findAll()
+            return res.send({mois: mois})
+        } catch (error) {
+            console.log("Erreur getAllMois ", error);
+            return res.status(404).send({error: 'Error getAllMois '+error})        
+        }
+    },
+    async getAllTypeReleve(req, res){
+        try {
+            const types_releve=await Type_releve.findAll()
+            return res.send({types_releve: types_releve})
+        } catch (error) {
+            console.log("Erreur getAllTypeReleve ", error);
+            return res.status(404).send({error: 'Error getAllTypeReleve '+error})        
+        }
+    },
+    async getAllSemaine(req, res){
+        try {
+            const semaines=await Semaine.findAll()
+            return res.send({semaines: semaines})
+        } catch (error) {
+            console.log("Erreur getAllSemaine ", error);
+            return res.status(404).send({error: 'Error getAllSemaine '+error})        
+        }
+    },
+    async getAllRegion(req, res){
+        try {
+            const regions=await Region.findAll()
+            return res.send({regions: regions})
+        } catch (error) {
+            console.log("Erreur getAllRegion ", error);
+            return res.status(404).send({error: 'Error getAllRegion '+error})        
+        }
+    },
+    async getAllEnqueteur(req, res){
+        try {
+            const enqueteurs=await sequelize.query("SELECT e.code, e.nom_prenom, e.region, r.libelle from enqueteur e join region r on r.code=e.region order by e.region, e.nom_prenom",{
+                replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({enqueteurs: enqueteurs})
+        } catch (error) {
+            console.log('Error getEnqueteur Matiere '+error);
+            res.status(404).send({error: 'Error getEnqueteur '+error})
+        }
+    },
+    async getAllSuperviseur(req, res){
+        try {
+            const superviseurs=await sequelize.query("SELECT e.code, e.nom_prenom, e.region, r.libelle from superviseur e join region r on r.code=e.region order by e.region, e.nom_prenom",{
+                replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({superviseurs: superviseurs})
+        } catch (error) {
+            console.log('Error getAllSuperviseur Matiere '+error);
+            res.status(404).send({error: 'Error getAllSuperviseur '+error})
+        }
+    },
+    async getAllTypePointVente(req, res){
+        try {
+            const types_point_vente=await Type_point_vente.findAll()
+            return res.send({types_point_vente: types_point_vente})
+        } catch (error) {
+            console.log("Erreur getAllTypePointVente ", error);
+            return res.status(404).send({error: 'Error getAllTypePointVente '+error})        
+        }
+    },
+    async getAllCommune(req, res){
+        try {
+            const communes=await sequelize.query("SELECT e.code, e.libelle, e.region, r.libelle as libelle_region from commune e join region r on r.code=e.region order by e.region, e.libelle",{
+                replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({communes: communes})
+        } catch (error) {
+            console.log('Error getAllCommune  '+error);
+            res.status(404).send({error: 'Error getAllCommune '+error})
+        }
+    },
+    async getAllPointVente(req, res){
+        try {
+            const points_vente=await sequelize.query("SELECT e.code, e.libelle, e.commune, c.libelle as libelle_commune, c.region, r.libelle as libelle_region  from point_vente e join commune c on c.code=e.commune join  region r on r.code=c.region order by c.region, e.commune, e.code",{
+                replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({points_vente: points_vente})
+        } catch (error) {
+            console.log('Error getAllPointVente  '+error);
+            res.status(404).send({error: 'Error getAllPointVente '+error})
+        }
     }
+
+
+
     /*async edit(req, res){
         try {
             let matiere=await Matiere.findByPk(req.body.id)
