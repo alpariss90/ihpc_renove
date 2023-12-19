@@ -1,10 +1,19 @@
 <template>
-    <layout-template pageTitre="Saisie Questionnaire semaine 1"
-     :region="com_region"  :commune="com_commune" :superviseur="com_superviseur" :enqueteur="com_enqueteur" 
-      :mois="com_mois" :releve="com_type_releve" >
+    <layout-template pageTitre="Saisie Questionnaire semaine 1" :region="com_region" :commune="com_commune"
+        :superviseur="com_superviseur" :enqueteur="com_enqueteur" :mois="com_mois" :releve="com_type_releve">
 
         <div class="container-fluid">
-            <div class="row" >
+
+            <div class="alert alert-danger" v-if="error != ''">
+                <strong>Error!</strong> {{ error }}
+                <hr>
+            </div>
+            <div class="alert alert-success" v-if="success != ''">
+                <strong>success!</strong> {{ success }}
+                <hr>
+            </div>
+
+            <div class="row">
                 <div class="col-lg-12 col-sm-12 col-xs-12" style="border-style: solid;padding-bottom: 10px;">
                     <div class="row">
                         <div class="col-lg-2 col-sm-2 col-xs-2">
@@ -17,7 +26,8 @@
                         </div>
                         <div class="col-lg-2 col-sm-2 col-xs-2">
                             <label>COMMUNE</label>
-                            <select class="form-control form-control-sm" name="dep" id="dep" v-model="commune" @change="getPointVenteByCommune">
+                            <select class="form-control form-control-sm" name="dep" id="dep" v-model="commune"
+                                @change="getPointVenteByCommune">
                                 <option v-for="d in communes" :key="d.code" :value="d">{{
                                     d.libelle }}</option>
                             </select>
@@ -51,19 +61,20 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="background-color: #AFE1AF; " v-show="frame==1 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)" >
+            <div class="row" style="background-color: #AFE1AF; "
+                v-show="frame == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O1 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
-                        <thead class="sticky-top top-0" >
-                            <tr >
+                        <thead class="sticky-top top-0">
+                            <tr>
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
                                 <th>DATE</th>
-                                <th>QTE1</th>
                                 <th>PRIX 1</th>
-                                <th>QTE2</th>
+                                <th>QTE1</th>
                                 <th>PRIX 2</th>
+                                <th>QTE2</th>
                                 <th>POINT VENTE</th>
                                 <th>OBSERVATIONS</th>
                             </tr>
@@ -73,32 +84,33 @@
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
-                                    <input  type="date"
-                                        class="form-control from-control-sm" v-model="v.date_passage" placeholder="date" />
+                                    <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
+                                        placeholder="date" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix1" placeholder="prix 1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix1"
+                                        placeholder="prix 1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite1" placeholder="qte1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                                        placeholder="qte1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix12" placeholder="prix 2" />
+                                    <input type="number" class="form-control from-control-sm"
+                                        :disabled="type_releve.code == '01'" v-model="v.prix12" placeholder="prix 2" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite2" placeholder="qte2" />
+                                    <input type="number" class="form-control from-control-sm"
+                                        :disabled="type_releve.code == '01'" v-model="v.quantite2" placeholder="qte2" />
                                 </td>
                                 <td>
                                     <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
-                                <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}</option>
-                            </select>
+                                        <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
+                                        </option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <textarea class="form-control from-control-sm" v-model="v.observation" ></textarea>
+                                    <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -110,7 +122,8 @@
 
 
 
-            <div class="row" style="background-color: #F07D0A;" v-show="frame==2 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+            <div class="row" style="background-color: #F07D0A;"
+                v-show="frame == 2 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O2 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
                     <table class="table table-bordered table-hover">
@@ -119,10 +132,10 @@
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
                                 <th>DATE</th>
-                                <th>QTE1</th>
                                 <th>PRIX 1</th>
-                                <th>QTE2</th>
+                                <th>QTE1</th>
                                 <th>PRIX 2</th>
+                                <th>QTE2</th>
                                 <th>POINT VENTE</th>
                                 <th>OBSERVATIONS</th>
                             </tr>
@@ -132,32 +145,33 @@
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
-                                    <input  type="date"
-                                        class="form-control from-control-sm" v-model="v.date_passage" placeholder="date" />
+                                    <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
+                                        placeholder="date" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix1" placeholder="prix 1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix1"
+                                        placeholder="prix 1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite1" placeholder="qte1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                                        placeholder="qte1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix12" placeholder="prix 2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix12"
+                                        placeholder="prix 2" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite2" placeholder="qte2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite2"
+                                        placeholder="qte2" />
                                 </td>
                                 <td>
                                     <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
-                                <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}</option>
-                            </select>
+                                        <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
+                                        </option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <textarea class="form-control from-control-sm" v-model="v.observation" ></textarea>
+                                    <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -169,7 +183,8 @@
 
 
 
-            <div class="row" style="background-color: #AFE1AF;" v-show="frame==3 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+            <div class="row" style="background-color: #AFE1AF;"
+                v-show="frame == 3 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O3 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
                     <table class="table table-bordered table-hover">
@@ -178,10 +193,10 @@
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
                                 <th>DATE</th>
-                                <th>QTE1</th>
                                 <th>PRIX 1</th>
-                                <th>QTE2</th>
+                                <th>QTE1</th>
                                 <th>PRIX 2</th>
+                                <th>QTE2</th>
                                 <th>POINT VENTE</th>
                                 <th>OBSERVATIONS</th>
                             </tr>
@@ -191,32 +206,33 @@
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
-                                    <input  type="date"
-                                        class="form-control from-control-sm" v-model="v.date_passage" placeholder="date" />
+                                    <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
+                                        placeholder="date" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix1" placeholder="prix 1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix1"
+                                        placeholder="prix 1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite1" placeholder="qte1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                                        placeholder="qte1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix12" placeholder="prix 2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix12"
+                                        placeholder="prix 2" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite2" placeholder="qte2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite2"
+                                        placeholder="qte2" />
                                 </td>
                                 <td>
                                     <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
-                                <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}</option>
-                            </select>
+                                        <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
+                                        </option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <textarea class="form-control from-control-sm" v-model="v.observation" ></textarea>
+                                    <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -229,7 +245,8 @@
 
 
 
-            <div class="row" style="background-color: #F07D0A;" v-show="frame==4 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+            <div class="row" style="background-color: #F07D0A;"
+                v-show="frame == 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_HE_S1 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
                     <table class="table table-bordered table-hover">
@@ -238,10 +255,10 @@
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
                                 <th>DATE</th>
-                                <th>QTE1</th>
                                 <th>PRIX 1</th>
-                                <th>QTE2</th>
+                                <th>QTE1</th>
                                 <th>PRIX 2</th>
+                                <th>QTE2</th>
                                 <th>POINT VENTE</th>
                                 <th>OBSERVATIONS</th>
                             </tr>
@@ -251,32 +268,33 @@
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
-                                    <input  type="date"
-                                        class="form-control from-control-sm" v-model="v.date_passage" placeholder="date" />
+                                    <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
+                                        placeholder="date" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix1" placeholder="prix 1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix1"
+                                        placeholder="prix 1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite1" placeholder="qte1" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                                        placeholder="qte1" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.prix12" placeholder="prix 2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix12"
+                                        placeholder="prix 2" />
                                 </td>
                                 <td>
-                                    <input  type="number"
-                                        class="form-control from-control-sm" v-model="v.quantite2" placeholder="qte2" />
+                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite2"
+                                        placeholder="qte2" />
                                 </td>
                                 <td>
                                     <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
-                                <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}</option>
-                            </select>
+                                        <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
+                                        </option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <textarea class="form-control from-control-sm" v-model="v.observation" ></textarea>
+                                    <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -292,21 +310,25 @@
         </div>
         <br>
         <div class="row">
-    <div class="col-md-1 col-lg-1">
-            <button class="btn btn-danger" @click="frame--" v-if="frame > 1 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Précédent</button>
-    </div>
+            <div class="col-md-1 col-lg-1">
+                <button class="btn btn-danger" @click="frame--"
+                    v-if="frame > 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Précédent</button>
+            </div>
 
-    <div class="col-md-1 col-lg-1 offset-md-10 offset-lg-10">
-        <button  class="btn btn-success" @click="frame++" v-if="frame<4 && (region.code > 0  && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Suivant</button>
-    </div>
+            <div class="col-md-1 col-lg-1 offset-md-10 offset-lg-10">
+                <button class="btn btn-primary" @click="check()"
+                    v-if="frame < 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Suivant</button>
+                <button class="btn btn-success" @click="check()"
+                    v-if="frame == 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Valider</button>
+            </div>
 
-    
-</div>
+
+        </div>
     </layout-template>
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, onMounted, computed } from 'vue';
+import { defineComponent, reactive, toRefs, onMounted, computed, watch } from 'vue';
 import service from '../../services/service'
 
 export default defineComponent({
@@ -332,7 +354,10 @@ export default defineComponent({
             type_releves: [],
             moiss: [],
             point_ventes: [],
-            frame: 1
+            frame: 1,
+            selectedRow: [],
+            error: '',
+            success: ''
         })
 
 
@@ -381,7 +406,7 @@ export default defineComponent({
             }
         }
 
-       
+
         const getCommuneByRegion = async () => {
             try {
                 const response = await service.getCommuneByRegion(state.region.code);
@@ -419,36 +444,100 @@ export default defineComponent({
             }
         }
 
+        const check = () => {
+            state.selectedRow = []
+            if (state.frame == 1) {
+                state.selectedRow = state.varietes1.filter(e => {
+                    return e.date_passage != undefined || e.quantite1 != undefined || e.prix1 != undefined || e.quantite2 != undefined || e.prix2 != undefined || e.point_vente != undefined || e.observation != undefined
+                })
+            } else if (state.frame == 2) {
+                state.selectedRow = state.varietes2.filter(e => {
+                    return e.date_passage != undefined || e.quantite1 != undefined || e.prix1 != undefined || e.quantite2 != undefined || e.prix2 != undefined || e.point_vente != undefined || e.observation != undefined
+                })
+            } else if (state.frame == 3) {
+                state.selectedRow = state.varietes3.filter(e => {
+                    return e.date_passage != undefined || e.quantite1 != undefined || e.prix1 != undefined || e.quantite2 != undefined || e.prix2 != undefined || e.point_vente != undefined || e.observation != undefined
+                })
+            } else if (state.frame == 4) {
+                state.selectedRow = state.varietes4.filter(e => {
+                    return e.date_passage != undefined || e.quantite1 != undefined || e.prix1 != undefined || e.quantite2 != undefined || e.prix2 != undefined || e.point_vente != undefined || e.observation != undefined
+                })
+            }
+
+
+            let etat = true;
+
+            for (let i = 0; i < state.selectedRow.length; i++) {
+                if (state.selectedRow[i].date_passage == undefined || state.selectedRow[i].quantite1 == undefined || state.selectedRow[i].prix1 == undefined || state.selectedRow[i].point_vente == undefined || state.selectedRow[i].observation == undefined) {
+                    etat = false;
+                }
+            }
+
+
+            if (state.selectedRow.length == 0) {
+                state.error = 'Veuillez remplir au moins une ligne'
+            } else {
+                if (!etat) {
+                    state.error = 'Veuillez remplir tout les champs'
+                } else {
+                    state.frame++
+                }
+            }
+
+
+
+
+        }
+
+
 
 
         /**
          * COMPUTED, HOOKS
          */
 
-         const com_region = computed( () => {
-            return  state.region.libelle
+        const com_region = computed(() => {
+            return state.region.libelle
         })
 
-        const com_commune = computed( () => {
+        const com_commune = computed(() => {
             return state.commune.libelle
         })
 
 
-        const com_superviseur = computed( () => {
+        const com_superviseur = computed(() => {
             return state.superviseur.nom_prenom
         })
 
-        const com_enqueteur = computed( () => {
+        const com_enqueteur = computed(() => {
             return state.enqueteur.nom_prenom
         })
 
-        const com_mois = computed( () => {
+        const com_mois = computed(() => {
             return state.mois.libelle
         })
 
 
-        const com_type_releve = computed( () => {
+        const com_type_releve = computed(() => {
             return state.type_releve.libelle
+        })
+
+        const com_selectedRow = computed(() => {
+            return state.selectedRow
+        })
+
+
+
+        watch(() => state.error, () => {
+            if (state.error != '') {
+                setTimeout(function () { state.error = '' }, 3000);
+            }
+        })
+
+        watch(() => state.success, () => {
+            if (state.success != '') {
+                setTimeout(function () { state.success = '' }, 3000);
+            }
         })
 
 
@@ -466,7 +555,7 @@ export default defineComponent({
         })
 
 
-        return { ...toRefs(state), com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
+        return { ...toRefs(state), com_selectedRow, check, com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
     }
 })
 
