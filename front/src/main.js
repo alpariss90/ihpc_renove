@@ -20,15 +20,23 @@ import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 import layoutTemplate from '../src/views/Layout.vue'
+import axios from 'axios';
+import VueAxios from 'vue-axios'
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.css'; 
+
+
+axios.defaults.withCredentials=false
+
+
 
 const app = createApp(App)
   .use(IonicVue)
+  .use(VueAxios, axios)
   .use(router);
 
   app.component('layout-template', layoutTemplate)

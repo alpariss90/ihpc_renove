@@ -34,5 +34,25 @@ export default {
     },
     getAllVariete(){
         return API().get('variete/liste')
+    },
+    getVarieteBySection(section){
+        return API().get('variete/quest/'+section)
+    },
+    getCommuneByRegion(region){
+        return API().get('commune/'+region)
+    },
+    getSupervisuerByRegion(region){
+        return API().get('superviseur/'+region)
+    },
+    getEnqueteurByRegion(region){
+        return API().get('enqueteur/'+region)
+    },
+    getPointVenteByCommune(commune){
+        return API().get('point_vente/'+commune)
+    },
+
+
+    login(user){
+        return API().post('login', user)
     }
 }

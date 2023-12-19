@@ -288,6 +288,32 @@ const Variete=sequelize.define('variete',{
 })
 
 
+const User=sequelize.define('users', {
+    login: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+    is_active:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
+    nom_prenom: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    profil: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    password:{
+        type: DataTypes.TEXT,
+        allowNull: false
+    }
+})
+
+
+
 const Datas=sequelize.define('datas',{
     id:{
         type: DataTypes.BIGINT,
@@ -359,6 +385,13 @@ const Datas=sequelize.define('datas',{
     observation:{
         type: DataTypes.TEXT,
         allowNull: true
+    },
+    user:{
+        type: DataTypes.STRING,
+        references:{
+            key: 'login',
+            model: User
+        }
     }  
 
 
@@ -379,5 +412,5 @@ Unite.hasMany(Matiere, {foreignKey: 'unite'})
 module.exports={
     Region, Mois, Type_releve, Semaine, Superviseur, Enqueteur, 
     Type_point_vente, Point_vente, Commune, sequelize, QueryTypes,
-    Section, Variete, Datas
+    Section, Variete, Datas, User
 }

@@ -1,6 +1,6 @@
 const {Region, Mois, Type_releve, Semaine, Superviseur, 
     Enqueteur, Type_point_vente, Point_vente, Commune,
-     sequelize, QueryTypes, Section, Variete, Datas}=require('../models')
+     sequelize, QueryTypes, Section, Variete, Datas, User}=require('../models')
 
 
 module.exports={
@@ -117,6 +117,7 @@ module.exports={
         }
     },
     async getAllMois(req, res){
+        console.log(req.session.user);
         try {
             const mois=await Mois.findAll()
             return res.send({mois: mois})
@@ -228,6 +229,80 @@ module.exports={
         } catch (error) {
             console.log('Error getAllVariete  '+error);
             res.status(404).send({error: 'Error getAllVariete '+error})
+        }
+    },
+    async getUserByLoginAndpassword(req, res){
+        if(!req.session.user)
+            req.session.user='test'
+        try {
+            const user=await sequelize.query('select * from users where login=:login and password=:password',{ 
+            replacements: {login: req.body.login, password: req.body.password},
+            type: QueryTypes.SELECT
+             })
+            res.send({user: user})
+        } catch (error) {
+            console.log("Erruer login ", error);
+            res.status(404).send({error: error})
+        }
+    },
+    async getVarieteBySection(req, res){
+        try {
+            const varietes=await sequelize.query("SELECT e.code, e.libelle_court, e.libelle_long, e.section, c.libelle as libelle_section from variete e join section c on c.code=e.section where e.section=:section order by e.section, e.code",{
+                replacements: {section: req.params.section},
+                type: QueryTypes.SELECT
+            })
+            res.send({varietes: varietes})
+        } catch (error) {
+            console.log('Error getVarieteBySection  ', error);
+            res.status(404).send({error: 'Error getVarieteBySection '+error})
+        }
+    },
+    async getCommuneByRegion(req, res){
+        try {
+            const communes=await sequelize.query("SELECT * from commune where region=:region order by code",{
+                replacements: {region: req.params.region},
+                type: QueryTypes.SELECT
+            })
+            res.send({communes: communes})
+        } catch (error) {
+            console.log('Error getCommuneByRegion  ', error);
+            res.status(404).send({error: 'Error getCommuneByRegion '+error})
+        }
+    },
+    async getSupervisuerByRegion(req, res){
+        try {
+            const superviseurs=await sequelize.query("SELECT * from superviseur where region=:region order by code",{
+                replacements: {region: req.params.region},
+                type: QueryTypes.SELECT
+            })
+            res.send({superviseurs: superviseurs})
+        } catch (error) {
+            console.log('Error getSupervisuerByRegion  ', error);
+            res.status(404).send({error: 'Error getSupervisuerByRegion '+error})
+        }
+    },
+    async getEnqueteurByRegion(req, res){
+        try {
+            const enqueteurs=await sequelize.query("SELECT * from enqueteur where region=:region order by code",{
+                replacements: {region: req.params.region},
+                type: QueryTypes.SELECT
+            })
+            res.send({enqueteurs: enqueteurs})
+        } catch (error) {
+            console.log('Error getEnqueteurByRegion  ', error);
+            res.status(404).send({error: 'Error getEnqueteurByRegion '+error})
+        }
+    },
+    async getPointVenteByCommune(req, res){
+        try {
+            const point_ventes=await sequelize.query("SELECT * from point_vente where commune=:commune order by code",{
+                replacements: {commune: req.params.commune},
+                type: QueryTypes.SELECT
+            })
+            res.send({point_ventes: point_ventes})
+        } catch (error) {
+            console.log('Error getPointVenteByCommune  ', error);
+            res.status(404).send({error: 'Error getPointVenteByCommune '+error})
         }
     }
 

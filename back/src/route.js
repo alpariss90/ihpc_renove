@@ -3,7 +3,7 @@ const referentielCtrl=require('./controllers/referentielCtrl')
 
 module.exports=(app)=>{
     app.get('/', referentielCtrl.accueil),
-    app.post('/region/add', referentielCtrl.addRegion) 
+    app.post('/region/add', referentielCtrl.addRegion ) 
     app.post('/mois/add', referentielCtrl.addMois) 
     app.post('/semaine/add', referentielCtrl.addSemaine) 
     app.post('/superviseur/add', referentielCtrl.addSuperviseur) 
@@ -27,5 +27,17 @@ module.exports=(app)=>{
     app.get('/point_vente/liste', referentielCtrl.getAllPointVente) 
     app.get('/section/liste', referentielCtrl.getAllSection) 
     app.get('/variete/liste', referentielCtrl.getAllVariete) 
+
+
+
+
+    app.get('/variete/quest/:section', referentielCtrl.getVarieteBySection)
+    app.get('/commune/:region', referentielCtrl.getCommuneByRegion)
+    app.get('/enqueteur/:region', referentielCtrl.getEnqueteurByRegion)
+    app.get('/superviseur/:region', referentielCtrl.getSupervisuerByRegion)
+    app.get('/point_vente/:commune', referentielCtrl.getPointVenteByCommune)
+
+
+    app.post('/login',  referentielCtrl.getUserByLoginAndpassword)
 }
 

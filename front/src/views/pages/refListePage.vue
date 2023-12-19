@@ -318,7 +318,7 @@
                 <ion-card>
                     <ion-card-header style="background-color: #AFE1AF;">
                         <ion-card-title>
-                            VARIETES {{ filtre_code }} {{ filtre_section }}
+                            VARIETES 
                         </ion-card-title>
                     </ion-card-header>
                     <ion-card-content>
@@ -332,7 +332,7 @@
                                     </select>
                                 </div>
                                 <div class="offset-lg-4 offset-md-4 col-lg-4 col-md-4"><ion-searchbar
-                                    placeholder="id / libelle / titre / semestre" v-model="filtre_code" />
+                                    placeholder="code / libelle court / libelle long" v-model="filtre_code" />
                             </div>
                             </div>
                              <br />
@@ -416,6 +416,8 @@ export default defineComponent({
             try {
                 const response = await service.getAllCommune();
                 state.communes = response.data.communes;
+                //this.$session.start()
+                //console.log(this.$session.getAll());
             } catch (error) {
                 console.log("Erruer getAllCommune ", error);
             }
@@ -518,6 +520,7 @@ export default defineComponent({
 
 
         onMounted(() => {
+            
             getAllRegion(), getAllCommune(), getAllTypeReleve(),
                 getAllMois(), getAllSemaine(), getAllTypePointVente(),
                 getAllEnqueteurs(), getAllSuperviseurs(), getAllPointVente(),
