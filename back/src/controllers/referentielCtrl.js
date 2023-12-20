@@ -89,6 +89,15 @@ module.exports={
             res.status(404).send({error: 'point_vente existe déja '+error})
         }
     },
+    async addOnePointVente(req, res){
+        try {
+            const point_vente=await Point_vente.create(req.body)
+            res.send({success: 'point_venteOne succefly added', point_vente: point_vente})
+        } catch (error) {
+            console.log("point_venteOne point_vente ", error);
+            res.status(404).send({error: 'point_venteOne existe déja '+error})
+        }
+    },
     async addSection(req, res){
         try {
             const section=await Section.bulkCreate(req.body)
@@ -200,8 +209,20 @@ module.exports={
     },
     async getAllPointVente(req, res){
         try {
-            const points_vente=await sequelize.query("SELECT e.code, e.libelle, e.commune, c.libelle as libelle_commune, c.region, r.libelle as libelle_region  from point_vente e join commune c on c.code=e.commune join  region r on r.code=c.region order by c.region, e.commune, e.code",{
+            const points_vente=await sequelize.query("SELECT e.code, e.libelle, e.commune, c.libelle as libelle_commune, c.region, r.libelle as libelle_region, v.code, v.libelle as libelle_type_point_vente  from point_vente e join commune c on c.code=e.commune join  region r on r.code=c.region join type_point_vente v on v.code=e.type_point_vente order by c.region, e.commune, e.code",{
                 replacements: {},
+                type: QueryTypes.SELECT
+            })
+            res.send({points_vente: points_vente})
+        } catch (error) {
+            console.log('Error getAllPointVente  '+error);
+            res.status(404).send({error: 'Error getAllPointVente '+error})
+        }
+    },
+    async getMaxPointVente(req, res){
+        try {
+            const points_vente=await sequelize.query("select commune, max(code) as max_code from point_vente where commune=:commune group by commune order by commune",{
+                replacements: {commune: req.params.commune},
                 type: QueryTypes.SELECT
             })
             res.send({points_vente: points_vente})

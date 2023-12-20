@@ -212,6 +212,13 @@ const Point_vente=sequelize.define('point_vente', {
             model: Commune,
             key: 'code'
         }
+    },
+    type_point_vente:{
+        type: DataTypes.STRING,
+        references:{
+            model: Type_point_vente,
+            key: 'code'
+        }
     }
 
 },{

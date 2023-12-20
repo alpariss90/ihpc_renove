@@ -50,6 +50,13 @@ export default {
     getPointVenteByCommune(commune){
         return API().get('point_vente/'+commune)
     },
+    getMaxPointVente(commune){
+        return API().get('point_vente/max/'+commune)
+    },
+
+    addPointVenteOne(point_vente){
+        return API().post('point_vente/addOne', point_vente)
+    },
 
 
     login(user){

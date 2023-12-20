@@ -2,8 +2,7 @@
     <layout-template pageTitre="Saisie Questionnaire semaine 1" :region="com_region" :commune="com_commune"
         :superviseur="com_superviseur" :enqueteur="com_enqueteur" :mois="com_mois" :releve="com_type_releve">
 
-        <div class="container-fluid">
-
+        <div class="container-fluid" >
             <div class="alert alert-danger" v-if="error != ''">
                 <strong>Error!</strong> {{ error }}
                 <hr>
@@ -13,7 +12,7 @@
                 <hr>
             </div>
 
-            <div class="row">
+            <div class="row" v-show="page==1">
                 <div class="col-lg-12 col-sm-12 col-xs-12" style="border-style: solid;padding-bottom: 10px;">
                     <div class="row">
                         <div class="col-lg-2 col-sm-2 col-xs-2">
@@ -62,7 +61,7 @@
                 </div>
             </div>
             <div class="row" style="background-color: #AFE1AF; "
-                v-show="frame == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="frame == 1 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O1 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
@@ -123,9 +122,9 @@
 
 
             <div class="row" style="background-color: #F07D0A;"
-                v-show="frame == 2 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="frame == 2 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O2 </h3>
-                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
+                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -184,9 +183,9 @@
 
 
             <div class="row" style="background-color: #AFE1AF;"
-                v-show="frame == 3 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="frame == 3 && page==1 &&  (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O3 </h3>
-                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
+                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -246,9 +245,9 @@
 
 
             <div class="row" style="background-color: #F07D0A;"
-                v-show="frame == 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="frame == 4 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_HE_S1 </h3>
-                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 300px;">
+                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -312,18 +311,45 @@
         <div class="row">
             <div class="col-md-1 col-lg-1">
                 <button class="btn btn-danger" @click="frame--"
-                    v-if="frame > 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Précédent</button>
+                    v-if="frame > 1 &&  page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Précédent</button>
             </div>
-
-            <div class="col-md-1 col-lg-1 offset-md-10 offset-lg-10">
+            <div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
+                <button @click="getMaxPointVente() && page++" class="btn btn-warning" v-if="frame > 0 &&  page==1 && frame < 5 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                Ajouter point de vente
+            </button>
+            </div>
+            <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4">
                 <button class="btn btn-primary" @click="check()"
-                    v-if="frame < 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Suivant</button>
+                    v-if="frame < 4 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Suivant</button>
                 <button class="btn btn-success" @click="check()"
                     v-if="frame == 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Valider</button>
             </div>
 
 
         </div>
+
+       <!-- <add-point-vente :service="service" :commune="commune.code" @test="test"></add-point-vente>-->
+
+       <div class="row" v-show="page==2">
+        <h1>Ajout point vente {{ point_vente_form }} {{ page }}</h1>
+<div class="col-md-6 col-lg-6 offset-md-3 offset-lg-3">
+ <form >
+    <div class="mb-3 mt-3">
+    <label for="email" class="form-label">Type point vente:</label>
+    <select class="form-control" v-model="point_vente_form.type_point_vente">
+        <option v-for="v in type_point_ventes" :value="v.code" :key="v.code">{{ v.libelle }}</option>
+    </select>
+  </div>
+  <div class="mb-3 mt-3">
+    <label for="email" class="form-label">Libelle point vente:</label>
+    <input type="text" v-model="point_vente_form.libelle" class="form-control"  placeholder="Enter le libelle du point vente" name="libelle" autocomplete="off">
+  </div>
+  
+  
+  <button type="button" class="btn btn-primary" style="float: right;" @click="page-- && addPointVente()">Submit</button>
+</form>
+</div>
+</div>
     </layout-template>
 </template>
 
@@ -333,7 +359,6 @@ import service from '../../services/service'
 
 export default defineComponent({
     name: 's1PAge',
-    components: {},
     setup() {
         const state = reactive({
             varietes1: [],
@@ -355,12 +380,55 @@ export default defineComponent({
             moiss: [],
             point_ventes: [],
             frame: 1,
+            page: 1,
             selectedRow: [],
             error: '',
-            success: ''
+            success: '',
+            type_point_ventes:[],
+            point_vente_form:{
+                type_point_vente:'',
+                code:'',
+                libelle: '',
+                commune: ''
+            }
         })
 
+        const getAllType_pointVente=async ()=>{
+            try {
+                const response=await service.getAllTypePointVente()
+                state.type_point_ventes=response.data.types_point_vente
+            } catch (error) {
+                console.log("Error getAllType_pointVente ", error);
+            }
+        }
 
+
+        const addPointVente=async ()=>{
+            try {
+                const response=await service.addPointVenteOne(state.point_vente_form)
+                state.success = 'Point de vente ajouté'
+                //console.log("1");
+                console.log(response);
+                //console.log(state.point_ventes);
+                //console.log("2");
+                getPointVenteByCommune(state.commune.code)
+                //state.point_ventes.push(response.data.point_vente[0])
+                getMaxPointVente()
+            } catch (error) {
+                console.log('Error addPointVente ', error);
+            }
+        }
+
+
+        const getMaxPointVente=async ()=>{
+            try {
+                const response=await service.getMaxPointVente(state.commune.code)
+                state.point_vente_form.commune=state.commune.code
+                state.point_vente_form.code= Number(response.data.points_vente[0].max_code) +1 
+            } catch (error) {
+                console.log("Error getMaxPointVente ", error);
+            }
+        }
 
         const getVarieteBySection = async (section) => {
             try {
@@ -444,6 +512,10 @@ export default defineComponent({
             }
         }
 
+        const showFormAjoutPoitnVente=()=>{
+
+        }
+
         const check = () => {
             state.selectedRow = []
             if (state.frame == 1) {
@@ -517,6 +589,10 @@ export default defineComponent({
             return state.mois.libelle
         })
 
+        const com_point_ventes = computed(() => {
+            return state.point_ventes
+        })
+
 
         const com_type_releve = computed(() => {
             return state.type_releve.libelle
@@ -548,6 +624,8 @@ export default defineComponent({
             getAllRegion()
             getAllTypeReleve()
             getAllMois()
+            getAllType_pointVente(),
+            //getMaxPointVente()
             state.varietes1 = await getVarieteBySection('Quest_O1')
             state.varietes2 = await getVarieteBySection('Quest_O2')
             state.varietes3 = await getVarieteBySection('Quest_O3')
@@ -555,7 +633,7 @@ export default defineComponent({
         })
 
 
-        return { ...toRefs(state), com_selectedRow, check, com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
+        return { ...toRefs(state), getMaxPointVente, com_point_ventes, addPointVente, service, showFormAjoutPoitnVente, com_selectedRow, check, com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
     }
 })
 

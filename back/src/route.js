@@ -11,7 +11,8 @@ module.exports=(app)=>{
     app.post('/enqueteur/add', referentielCtrl.addEnqueteur) 
     app.post('/commune/add', referentielCtrl.addCommune) 
     app.post('/type_point_vente/add', referentielCtrl.addTypePointVente) 
-    app.post('/point_vente/add', referentielCtrl.addPointVente) 
+    app.post('/point_vente/add', referentielCtrl.addPointVente)
+    app.post('/point_vente/addOne', referentielCtrl.addOnePointVente) 
     app.post('/section/add', referentielCtrl.addSection) 
     app.post('/variete/add', referentielCtrl.addVariete) 
     app.post('/datas/add', referentielCtrl.addPointVente) 
@@ -25,6 +26,7 @@ module.exports=(app)=>{
     app.get('/commune/liste', referentielCtrl.getAllCommune) 
     app.get('/type_point_vente/liste', referentielCtrl.getAllTypePointVente) 
     app.get('/point_vente/liste', referentielCtrl.getAllPointVente) 
+    app.get('/point_vente/max/:commune', referentielCtrl.getMaxPointVente)
     app.get('/section/liste', referentielCtrl.getAllSection) 
     app.get('/variete/liste', referentielCtrl.getAllVariete) 
 

@@ -71,7 +71,7 @@ app.use(cors({
 
 
 require('./src/route')(app)
-   
+    
   
 //sequelize.sync({alter: true});
 
