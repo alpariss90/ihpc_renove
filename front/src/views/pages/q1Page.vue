@@ -1,65 +1,115 @@
 <template>
-    <div class="row" style="background-color: #AFE1AF; ">
-    
-                <h3>Quest_O1 </h3>
-                <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
-                    <table class="table table-bordered table-hover">
-                        <thead class="sticky-top top-0">
-                            <tr>
-                                <th>CODE</th>
-                                <th>LIBELLE</th>
-                                <th>DATE</th>
-                                <th>PRIX 1</th>
-                                <th>QTE1</th>
-                                <th>PRIX 2</th>
-                                <th>QTE2</th>
-                                <th>POINT VENTE</th>
-                                <th>OBSERVATIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="v in datas" v-bind:key="v.code">
-                                <td>{{ v.code }}</td>
-                                <td>{{ v.libelle_court }}</td>
-                                <td>
-                                    <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
-                                        placeholder="date" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control from-control-sm" v-model="v.prix1"
-                                        placeholder="prix 1" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
-                                        placeholder="qte1" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control from-control-sm"
-                                        :disabled="type_releve == '01'" v-model="v.prix12" placeholder="prix 2" />
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control from-control-sm"
-                                        :disabled="type_releve == '01'" v-model="v.quantite2" placeholder="qte2" />
-                                </td>
-                                <td>
-                                    <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
-                                        <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+<div class="alert alert-danger" v-if="error != ''">
+                <strong>Error!</strong> {{ error }}
+                <hr>
+            </div>
+            <div class="alert alert-success" v-if="success != ''">
+                <strong>success!</strong> {{ success }}
+                <hr>
+            </div>
+
+
+
+    <div class="row" style="background-color: #AFE1AF; " v-show="page == 1">
+
+        <h3>Quest_O1 </h3>
+        <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
+            <table class="table table-bordered table-hover">
+                <thead class="sticky-top top-0">
+                    <tr>
+                        <th>CODE</th>
+                        <th>LIBELLE</th>
+                        <th>DATE</th>
+                        <th>PRIX 1</th>
+                        <th>QTE1</th>
+                        <th>PRIX 2</th>
+                        <th>QTE2</th>
+                        <th>POINT VENTE</th>
+                        <th>OBSERVATIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="v in datas" v-bind:key="v.code">
+                        <td>{{ v.code }}</td>
+                        <td>{{ v.libelle_court }}</td>
+                        <td>
+                            <input type="date" class="form-control from-control-sm" v-model="v.date_passage"
+                                placeholder="date" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control from-control-sm" v-model="v.prix1"
+                                placeholder="prix 1" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                                placeholder="qte1" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control from-control-sm" :disabled="type_releve == '01'"
+                                v-model="v.prix12" placeholder="prix 2" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control from-control-sm" :disabled="type_releve == '01'"
+                                v-model="v.quantite2" placeholder="qte2" />
+                        </td>
+                        <td>
+                            <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
+                                <option v-for="z in point_ventes" :key="z.code" :value="z.code">{{ z.libelle }}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea class="form-control from-control-sm" v-model="v.observation"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <br>
+        <div class="row p-3">
+
+            <div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
+                <button @click="getMaxPointVente() && page++" class="btn btn-warning" >
+                Ajouter point de vente
+            </button>
+            </div>
+
+
+        <div class="col-md-1 col-lg-1 offset-md-5 offset-lg-5 ">
+            <button class="btn btn-success" @click="check()">Valider</button>
+        </div>
+
+        </div>
+    </div>
+
+    <div class="row" style="background-color: #AFE1AF; " v-show="page == 2">
+        <h1>Ajout point vente </h1>
+        <div class="col-md-6 col-lg-6 offset-md-3 offset-lg-3">
+            <form>
+                <div class="mb-3 mt-3">
+                    <label for="email" class="form-label">Type point vente:</label>
+                    <select class="form-control" v-model="point_vente_form.type_point_vente">
+                        <option v-for="v in type_point_ventes" :value="v.code" :key="v.code">{{ v.libelle }}</option>
+                    </select>
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="email" class="form-label">Libelle point vente:</label>
+                    <input type="text" v-model="point_vente_form.libelle" class="form-control"
+                        placeholder="Enter le libelle du point vente" name="libelle" autocomplete="off">
                 </div>
 
-                <div class="col-md-1 col-lg-1 offset-md-11 offset-lg-11 p-3">
-                           <button class="btn btn-success" @click="check()"
-                   >Valider</button>
-            </div>
-            </div>
+
+                <button type="button" class="btn btn-primary" style="float: right;"
+                    @click="page-- && addPointVente()">Valider</button>
+
+                    <button type="button" class="btn btn-danger" style="float: left;"
+                    @click="page-- ">Rétour</button>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -67,13 +117,24 @@ import { defineComponent, reactive, toRefs, onMounted, watch/*, computed, */ } f
 import service from '../../services/service'
 export default defineComponent({
     name: 'q1Page',
-    props:['commune', 'mois',  'semaine', 'type_releve'],
+    props: ['commune', 'mois', 'semaine', 'type_releve'],
     setup(props) {
 
 
-        const state=reactive({
+        const state = reactive({
             varietes: [],
-            datas: []
+            datas: [],
+            page: 1,
+            point_vente_form: {
+                type_point_vente: '',
+                code: '',
+                libelle: '',
+                commune: ''
+            },
+            type_point_ventes:[],
+            success: '',
+            error: '',
+            point_ventes: []
         })
 
 
@@ -87,6 +148,55 @@ export default defineComponent({
             }
         }
 
+        
+
+        const getAllType_pointVente = async () => {
+                try {
+                    const response = await service.getAllTypePointVente()
+                    state.type_point_ventes = response.data.types_point_vente
+                } catch (error) {
+                    console.log("Error getAllType_pointVente ", error);
+                }
+            }
+
+
+            const addPointVente = async () => {
+            try {
+                 await service.addPointVenteOne(state.point_vente_form)
+                state.success = 'Point de vente ajouté'
+                state.point_vente_form.code = ''
+                state.point_vente_form.type_point_vente = ''
+                state.point_vente_form.libelle = ''
+                state.point_vente_form.commune = ''
+                getPointVenteByCommune(props.commune)
+                getMaxPointVente()
+            } catch (error) {
+                console.log('Error addPointVente ', error);
+            }
+        }
+
+        const getMaxPointVente = async () => {
+            try {
+                const response = await service.getMaxPointVente(props.commune)
+                state.point_vente_form.commune = props.commune
+                state.point_vente_form.code = Number(response.data.points_vente[0].max_code) + 1
+            } catch (error) {
+                console.log("Error getMaxPointVente ", error);
+            }
+        }
+
+        const getPointVenteByCommune = async () => {
+            try {
+                const response = await service.getPointVenteByCommune(props.commune);
+                console.log(response.data.point_ventes);
+                state.point_ventes = response.data.point_ventes
+            } catch (error) {
+                console.log('Erreur getPointVenteByCommune ', error);
+            }
+        }
+
+
+
         const initData = async () => {
             try {
                 await service.addDatas(makeInitDatas());
@@ -97,13 +207,15 @@ export default defineComponent({
         }
 
 
-        const makeInitDatas=()=>{
-            let  datas1=[]
-            for(let i=0; i<state.varietes.length; i++){
+        const makeInitDatas = () => {
+            let datas1 = []
+            for (let i = 0; i < state.varietes.length; i++) {
                 datas1.push(
-                    {enqueteur: '00', variete: state.varietes[i].code, superviseur: '00', 
-                    commune : props.commune, mois: props.mois, semaine: '01', point_vente: '00', user: '00'}
-                    )
+                    {
+                        enqueteur: '00', variete: state.varietes[i].code, superviseur: '00',
+                        commune: props.commune, mois: props.mois, semaine: '01', point_vente: '00', user: '00'
+                    }
+                )
             }
 
             return datas1;
@@ -124,7 +236,6 @@ export default defineComponent({
         const getData = async () => {
             try {
                 const response = await service.getData1(props.commune, props.mois, props.semaine);
-                console.log(response.data.datas);
                 state.datas = response.data.datas
             } catch (error) {
                 console.log('Erreur getData ', error);
@@ -132,58 +243,71 @@ export default defineComponent({
         }
 
 
-        const verify= async ()=>{
-            
-            const n=await checkData()
-                //alert(n)
-                if(n == 0){
-                   // alert(n+ "A")
-                    initData()
-                }else{
-                    //alert(n+ "B")
-                    getData()
-                }
+        const verify = async () => {
+
+            const n = await checkData()
+            //alert(n)
+            if (n == 0) {
+                // alert(n+ "A")
+                initData()
+            } else {
+                //alert(n+ "B")
+                getData()
+            }
         }
 
-        
 
 
 
-        onMounted( async () => {
+
+        onMounted(async () => {
             //alert(props.commune+" "+props.mois+" "+props.semaine) 
             state.varietes = await getVarieteBySection('Quest_O1');
-            verify() 
+            verify();
+            getAllType_pointVente()
+            getPointVenteByCommune()
         })
 
+
+        
+        watch(() => state.error, () => {
+            if (state.error != '') {
+                setTimeout(function () { state.error = '' }, 3000);
+            }
+        })
+
+        watch(() => state.success, () => {
+            if (state.success != '') {
+                setTimeout(function () { state.success = '' }, 3000);
+            }
+        })
 
 
         watch(() => props.commune, async () => {
-           if(props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0){
-            verify()
-           }
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+                verify()
+            }
         })
 
         watch(() => props.mois, async () => {
-           if(props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0){
-            verify()
-           }
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+                verify()
+            }
         })
 
         watch(() => props.semaine, async () => {
-           if(props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0){
-            verify()
-           }
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+                verify()
+            }
         })
 
-        
 
 
-        return {...toRefs(state), props}
+
+        return { ...toRefs(state), addPointVente, getMaxPointVente }
     }
 })
 </script>
 
 
-<style scoped>
-
-</style>
+<style scoped></style>

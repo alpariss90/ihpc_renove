@@ -18,6 +18,8 @@ module.exports=(app)=>{
     app.post('/datas/add', referentielCtrl.addDatas)
     app.get('/datas/get/:section/:commune/:mois/:semaine', referentielCtrl.getDataInit) 
 
+
+    
     app.get('/region/liste', referentielCtrl.getAllRegion) 
     app.get('/mois/liste', referentielCtrl.getAllMois) 
     app.get('/semaine/liste', referentielCtrl.getAllSemaine) 
