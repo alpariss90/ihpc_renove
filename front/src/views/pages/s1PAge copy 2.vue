@@ -1,8 +1,8 @@
 <template>
     <layout-template pageTitre="Saisie Questionnaire semaine 1" :region="com_region" :commune="com_commune"
-        :superviseur="com_superviseur" :enqueteur="com_enqueteur" :mois="com_mois" :releve="com_type_releve">
+        :superviseur="com_superviseur" :enqueteur="com_enqueteur" :mois="com_mois" :releve="com_type_releve" :quest="quest">
 
-        <div class="container-fluid" >
+        <div class="container-fluid">
             <div class="alert alert-danger" v-if="error != ''">
                 <strong>Error!</strong> {{ error }}
                 <hr>
@@ -12,10 +12,10 @@
                 <hr>
             </div>
 
-            <div class="row" v-show="page==1">
+            <div class="row" v-show="page == 1">
                 <div class="col-lg-12 col-sm-12 col-xs-12" style="border-style: solid;padding-bottom: 10px;">
                     <div class="row">
-                        <div class="col-lg-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-1 col-sm-1 col-xs-1">
                             <label>REGION </label>
                             <select class="form-control form-control-sm" name="region" id="region" v-model="region"
                                 @change="reloadComSupEnq">
@@ -23,7 +23,7 @@
                                     {{ r.libelle }}</option>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-1 col-sm-1 col-xs-1">
                             <label>COMMUNE</label>
                             <select class="form-control form-control-sm" name="dep" id="dep" v-model="commune"
                                 @change="getPointVenteByCommune">
@@ -57,11 +57,20 @@
                                 <option v-for="z in type_releves" :key="z.code" :value="z">{{ z.libelle }}</option>
                             </select>
                         </div>
+                        <div class="col-lg-2 col-sm-2 col-xs-2" v-show="mois.code > 0 && commune.code > 0">
+                            <label>QUESTIONNAIRE</label>
+                            <select class="form-control form-control-sm" name="quest" v-model="quest">
+                                <option value="Quest_O1">Quest_O1</option>
+                                <option value="Quest_O2">Quest_O2</option>
+                                <option value="Quest_O3">Quest_O3</option>
+                                <option value="Quest_HE_S1">Quest_HE_S1</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row" style="background-color: #AFE1AF; "
-                v-show="frame == 1 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="quest == 'Quest_O1' && page == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O1 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
@@ -79,7 +88,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="v in varietes1" v-bind:key="v.code">
+                            <tr v-for="v in datas1" v-bind:key="v.code">
+                                <!--
+                           <input type="hidden" :value="userConnected" v-model="v.user"  />
+                           <input type="hidden" :value="enqueteur.code" v-model="v.enqueteur"  />
+                           <input type="hidden" :value="superviseur.code" v-model="v.superviseur"  />
+                           <input type="hidden" :value="commune.code" v-model="v.commune"  />
+                           <input type="hidden" :value="mois.code" v-model="v.mois"  />
+                           <input type="hidden" :value="type_releve.code" v-model="v.type_releve"  /> -->
+
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
@@ -115,6 +132,11 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="col-md-1 col-lg-1 offset-md-11 offset-lg-11 p-3">
+                           <button class="btn btn-success" @click="check()"
+                    v-if="page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0 && quest !='')">Valider</button>
+            </div>
             </div>
 
 
@@ -122,7 +144,7 @@
 
 
             <div class="row" style="background-color: #F07D0A;"
-                v-show="frame == 2 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="quest == 'Quest_O2' && page == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O2 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
@@ -141,6 +163,15 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in varietes2" v-bind:key="v.code">
+
+                                <!--
+                           <input type="hidden" :value="userConnected" v-model="v.user"  />
+                           <input type="hidden" :value="enqueteur.code" v-model="v.enqueteur"  />
+                           <input type="hidden" :value="superviseur.code" v-model="v.superviseur"  />
+                           <input type="hidden" :value="commune.code" v-model="v.commune"  />
+                           <input type="hidden" :value="mois.code" v-model="v.mois"  />
+                           <input type="hidden" :value="type_releve.code" v-model="v.type_releve"  /> -->
+
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
@@ -156,7 +187,7 @@
                                         placeholder="qte1" />
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control from-control-sm" v-model="v.prix12"
+                                    <input type="number" class="form-control from-control-sm" v-model="v.prix2"
                                         placeholder="prix 2" />
                                 </td>
                                 <td>
@@ -183,7 +214,7 @@
 
 
             <div class="row" style="background-color: #AFE1AF;"
-                v-show="frame == 3 && page==1 &&  (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="quest == 'Quest_O3' && page == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_O3 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
@@ -202,6 +233,15 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in varietes3" v-bind:key="v.code">
+
+                                <!--
+                           <input type="hidden" :value="userConnected" v-model="v.user"  />
+                           <input type="hidden" :value="enqueteur.code" v-model="v.enqueteur"  />
+                           <input type="hidden" :value="superviseur.code" v-model="v.superviseur"  />
+                           <input type="hidden" :value="commune.code" v-model="v.commune"  />
+                           <input type="hidden" :value="mois.code" v-model="v.mois"  />
+                           <input type="hidden" :value="type_releve.code" v-model="v.type_releve"  /> -->
+
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
@@ -245,7 +285,7 @@
 
 
             <div class="row" style="background-color: #F07D0A;"
-                v-show="frame == 4 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
+                v-show="quest == 'Quest_HE_S1' && page == 1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
                 <h3>Quest_HE_S1 </h3>
                 <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
                     <table class="table table-bordered table-hover">
@@ -264,6 +304,15 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in varietes4" v-bind:key="v.code">
+
+                                <!--
+                           <input type="hidden" :value="userConnected" v-model="v.user"  />
+                           <input type="hidden" :value="enqueteur.code" v-model="v.enqueteur"  />
+                           <input type="hidden" :value="superviseur.code" v-model="v.superviseur"  />
+                           <input type="hidden" :value="commune.code" v-model="v.commune"  />
+                           <input type="hidden" :value="mois.code" v-model="v.mois"  />
+                           <input type="hidden" :value="type_releve.code" v-model="v.type_releve"  /> -->
+
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
                                 <td>
@@ -309,15 +358,11 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-md-1 col-lg-1">
+            <!--  <div class="col-md-1 col-lg-1">
                 <button class="btn btn-danger" @click="frame--"
                     v-if="frame > 1 &&  page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Précédent</button>
             </div>
-            <div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
-                <button @click="getMaxPointVente() && page++" class="btn btn-warning" v-if="frame > 0 &&  page==1 && frame < 5 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">
-                Ajouter point de vente
-            </button>
-            </div>
+           
             <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4">
                 <button class="btn btn-primary" @click="check()"
                     v-if="frame < 4 && page==1 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Suivant</button>
@@ -325,31 +370,39 @@
                     v-if="frame == 4 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0)">Valider</button>
             </div>
 
+-->
 
+<div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
+                <button @click="getMaxPointVente() && page++" class="btn btn-warning" v-if="frame > 0 &&  page==1 && frame < 5 && (region.code > 0 && commune.code > 0 && superviseur.code > 0 && enqueteur.code > 0 && mois.code > 0 && type_releve.code > 0 && quest != '')">
+                Ajouter point de vente
+            </button>
+            </div>
         </div>
 
-       <!-- <add-point-vente :service="service" :commune="commune.code" @test="test"></add-point-vente>-->
+        <!-- <add-point-vente :service="service" :commune="commune.code" @test="test"></add-point-vente>-->
 
-       <div class="row" v-show="page==2">
-        <h1>Ajout point vente {{ point_vente_form }} {{ page }}</h1>
-<div class="col-md-6 col-lg-6 offset-md-3 offset-lg-3">
- <form >
-    <div class="mb-3 mt-3">
-    <label for="email" class="form-label">Type point vente:</label>
-    <select class="form-control" v-model="point_vente_form.type_point_vente">
-        <option v-for="v in type_point_ventes" :value="v.code" :key="v.code">{{ v.libelle }}</option>
-    </select>
-  </div>
-  <div class="mb-3 mt-3">
-    <label for="email" class="form-label">Libelle point vente:</label>
-    <input type="text" v-model="point_vente_form.libelle" class="form-control"  placeholder="Enter le libelle du point vente" name="libelle" autocomplete="off">
-  </div>
-  
-  
-  <button type="button" class="btn btn-primary" style="float: right;" @click="page-- && addPointVente()">Submit</button>
-</form>
-</div>
-</div>
+        <div class="row" v-show="page == 2">
+            <h1>Ajout point vente </h1>
+            <div class="col-md-6 col-lg-6 offset-md-3 offset-lg-3">
+                <form>
+                    <div class="mb-3 mt-3">
+                        <label for="email" class="form-label">Type point vente:</label>
+                        <select class="form-control" v-model="point_vente_form.type_point_vente">
+                            <option v-for="v in type_point_ventes" :value="v.code" :key="v.code">{{ v.libelle }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="email" class="form-label">Libelle point vente:</label>
+                        <input type="text" v-model="point_vente_form.libelle" class="form-control"
+                            placeholder="Enter le libelle du point vente" name="libelle" autocomplete="off">
+                    </div>
+
+
+                    <button type="button" class="btn btn-primary" style="float: right;"
+                        @click="page-- && addPointVente()">Submit</button>
+                </form>
+            </div>
+        </div>
     </layout-template>
 </template>
 
@@ -361,6 +414,7 @@ export default defineComponent({
     name: 's1PAge',
     setup() {
         const state = reactive({
+            quest: '',
             varietes1: [],
             varietes2: [],
             varietes3: [],
@@ -384,29 +438,39 @@ export default defineComponent({
             selectedRow: [],
             error: '',
             success: '',
-            type_point_ventes:[],
-            point_vente_form:{
-                type_point_vente:'',
-                code:'',
+            type_point_ventes: [],
+            point_vente_form: {
+                type_point_vente: '',
+                code: '',
                 libelle: '',
                 commune: ''
-            }
+            },
+            userConnected: 'alpariss', //implement after session implementation
+            datas1: [],
+            datas2: [],
+            datas3: [],
+            datas4: []
+
         })
 
-        const getAllType_pointVente=async ()=>{
+        const getAllType_pointVente = async () => {
             try {
-                const response=await service.getAllTypePointVente()
-                state.type_point_ventes=response.data.types_point_vente
+                const response = await service.getAllTypePointVente()
+                state.type_point_ventes = response.data.types_point_vente
             } catch (error) {
                 console.log("Error getAllType_pointVente ", error);
             }
         }
 
 
-        const addPointVente=async ()=>{
+        const addPointVente = async () => {
             try {
-                const response=await service.addPointVenteOne(state.point_vente_form)
+                const response = await service.addPointVenteOne(state.point_vente_form)
                 state.success = 'Point de vente ajouté'
+                state.point_vente_form.code = ''
+                state.point_vente_form.type_point_vente = ''
+                state.point_vente_form.libelle = ''
+                state.point_vente_form.commune = ''
                 //console.log("1");
                 console.log(response);
                 //console.log(state.point_ventes);
@@ -420,11 +484,11 @@ export default defineComponent({
         }
 
 
-        const getMaxPointVente=async ()=>{
+        const getMaxPointVente = async () => {
             try {
-                const response=await service.getMaxPointVente(state.commune.code)
-                state.point_vente_form.commune=state.commune.code
-                state.point_vente_form.code= Number(response.data.points_vente[0].max_code) +1 
+                const response = await service.getMaxPointVente(state.commune.code)
+                state.point_vente_form.commune = state.commune.code
+                state.point_vente_form.code = Number(response.data.points_vente[0].max_code) + 1
             } catch (error) {
                 console.log("Error getMaxPointVente ", error);
             }
@@ -485,6 +549,44 @@ export default defineComponent({
             }
         }
 
+        const checkData1 = async () => {
+            try {
+               // alert(state.commune.code+' '+state.commune.code+' '+state.varietes1[0].code)
+                const response = await service.checkData(state.commune.code, state.mois.code, state.varietes1[0].code);
+                return response.data.datas.length;
+            } catch (error) {
+                console.log('Erreur checkData1 ', error);
+                return 0
+            }
+        }
+
+        const checkData2 = async () => {
+            try {
+                const response = await service.checkData(state.commune.code, state.commune.mois, state.varietes2[0].code);
+                alert(response.data.datas.length);
+            } catch (error) {
+               alert('Erreur checkData1 ', error);
+            }
+        }
+
+        const checkData3 = async () => {
+            try {
+                const response = await service.checkData(state.commune.code, state.commune.mois, state.varietes3[0].code);
+                console.log(response.data.datas.length);
+            } catch (error) {
+                console.log('Erreur checkData1 ', error);
+            }
+        }
+
+        const checkData4 = async () => {
+            try {
+                const response = await service.checkData(state.commune.code, state.commune.mois, state.varietes4[0].code);
+                console.log(response.data.datas.length);
+            } catch (error) {
+                console.log('Erreur checkData1 ', error);
+            }
+        }
+
         const getSuperviseurByRegion = async () => {
             try {
                 const response = await service.getSupervisuerByRegion(state.region.code);
@@ -512,8 +614,80 @@ export default defineComponent({
             }
         }
 
-        const showFormAjoutPoitnVente=()=>{
+        const initData1 = async () => {
+            try {
+                await service.addDatas(makeInitDatas1());
+                getData1()
+            } catch (error) {
+                console.log('Erreur initData1 ', error);
+            }
+        }
 
+        const getData1 = async () => {
+            try {
+                const response = await service.getData1();
+                state.datas1 = response.data.datas
+            } catch (error) {
+                console.log('Erreur getData1 ', error);
+            }
+        }
+
+        const showFormAjoutPoitnVente = () => {
+
+        }
+
+
+        const fetchData = () => {
+            let datas = []
+            for (let j = 0; j < state.varietes1.length; j++) {
+                if (state.varietes1[j] != "") {
+                    //state.varietes1[j].user="alpariss" //implement after session
+                    //state.varietes1[j].enqueteur=state.enqueteur.code
+                    //state.varietes1[j].superviseur=state.superviseur.code
+                    //state.varietes1[j].commune=state.commune.code
+                    //state.varietes1[j].mois=state.mois.code
+                    // state.varietes1[j].point_vente=state.point_vente.code
+                    datas.push(state.varietes1[j])
+                }
+            }
+
+            for (let j = 0; j < state.varietes2.length; j++) {
+                if (state.varietes1[j] != "") {
+                    //state.varietes1[j].user="alpariss" //implement after session
+                    //state.varietes1[j].enqueteur=state.enqueteur.code
+                    //state.varietes1[j].superviseur=state.superviseur.code
+                    //state.varietes1[j].commune=state.commune.code
+                    //state.varietes1[j].mois=state.mois.code
+                    // state.varietes1[j].point_vente=state.point_vente.code
+                    datas.push(state.varietes1[j])
+                }
+            }
+
+            for (let j = 0; j < state.varietes1.length; j++) {
+                if (state.varietes3[j] != "") {
+                    //state.varietes1[j].user="alpariss" //implement after session
+                    //state.varietes1[j].enqueteur=state.enqueteur.code
+                    //state.varietes1[j].superviseur=state.superviseur.code
+                    //state.varietes1[j].commune=state.commune.code
+                    //state.varietes1[j].mois=state.mois.code
+                    // state.varietes1[j].point_vente=state.point_vente.code
+                    datas.push(state.varietes1[j])
+                }
+            }
+
+            for (let j = 0; j < state.varietes4.length; j++) {
+                if (state.varietes1[j] != "") {
+                    //state.varietes1[j].user="alpariss" //implement after session
+                    //state.varietes1[j].enqueteur=state.enqueteur.code
+                    //state.varietes1[j].superviseur=state.superviseur.code
+                    //state.varietes1[j].commune=state.commune.code
+                    //state.varietes1[j].mois=state.mois.code
+                    // state.varietes1[j].point_vente=state.point_vente.code
+                    datas.push(state.varietes1[j])
+                }
+            }
+
+            return datas
         }
 
         const check = () => {
@@ -551,6 +725,9 @@ export default defineComponent({
             } else {
                 if (!etat) {
                     state.error = 'Veuillez remplir tout les champs'
+                } else if (etat && state.frame == 4) {
+                    let datas = fetchData()
+                    console.log(datas);
                 } else {
                     state.frame++
                 }
@@ -562,7 +739,17 @@ export default defineComponent({
         }
 
 
+        const makeInitDatas1=()=>{
+            let  datas1=[]
+            for(let i=0; i<state.varietes1.length; i++){
+                datas1.push(
+                    {enqueteur: '00', variete: state.varietes1[i].code, superviseur: '00', 
+                    commune : state.commune.code, mois: state.mois.code, semaine: '01', point_vente: '00', user: '00'}
+                    )
+            }
 
+            return datas1;
+        }
 
         /**
          * COMPUTED, HOOKS
@@ -603,6 +790,11 @@ export default defineComponent({
         })
 
 
+        const com_data1=computed(()=>{
+            return state.datas1
+        })
+
+
 
         watch(() => state.error, () => {
             if (state.error != '') {
@@ -613,6 +805,25 @@ export default defineComponent({
         watch(() => state.success, () => {
             if (state.success != '') {
                 setTimeout(function () { state.success = '' }, 3000);
+            }
+        })
+
+
+        watch(() => state.quest, async () => {
+            if(state.quest=='Quest_O1'){
+                const n=await checkData1()
+                alert(n)
+                if(n == 0){
+                    initData1()
+                }else{
+                    getData1()
+                }
+            }else if(state.quest=='Quest_O2'){
+                checkData2()
+            }else if(state.quest=='Quest_O3'){
+                checkData3()
+            }else if(state.quest=='Quest_HE_S1'){
+                checkData4()
             }
         })
 
@@ -633,7 +844,7 @@ export default defineComponent({
         })
 
 
-        return { ...toRefs(state), getMaxPointVente, com_point_ventes, addPointVente, service, showFormAjoutPoitnVente, com_selectedRow, check, com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
+        return { ...toRefs(state), com_data1, getMaxPointVente, com_point_ventes, addPointVente, service, showFormAjoutPoitnVente, com_selectedRow, check, com_region, com_commune, com_superviseur, com_enqueteur, com_mois, com_type_releve, getCommuneByRegion, getPointVenteByCommune, getEnqueteurByRegion, getSuperviseurByRegion, getAllMois, reloadComSupEnq }
     }
 })
 

@@ -15,7 +15,8 @@ module.exports=(app)=>{
     app.post('/point_vente/addOne', referentielCtrl.addOnePointVente) 
     app.post('/section/add', referentielCtrl.addSection) 
     app.post('/variete/add', referentielCtrl.addVariete) 
-    app.post('/datas/add', referentielCtrl.addPointVente) 
+    app.post('/datas/add', referentielCtrl.addDatas)
+    app.get('/datas/get/:section/:commune/:mois/:semaine', referentielCtrl.getDataInit) 
 
     app.get('/region/liste', referentielCtrl.getAllRegion) 
     app.get('/mois/liste', referentielCtrl.getAllMois) 
@@ -29,6 +30,11 @@ module.exports=(app)=>{
     app.get('/point_vente/max/:commune', referentielCtrl.getMaxPointVente)
     app.get('/section/liste', referentielCtrl.getAllSection) 
     app.get('/variete/liste', referentielCtrl.getAllVariete) 
+
+
+
+
+    app.get('/datas/check/:commune/:mois/:variete/:semaine', referentielCtrl.checkData) 
 
 
 

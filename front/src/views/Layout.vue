@@ -4,7 +4,7 @@
             <div class="container-fluid p-3 text-white text-center" style="background-color: #269d2f">
                 <h1>IHPC RENOVE</h1>
                 <h3 style="color: black; font-weight: bold;">{{ pageTitre }}</h3>
-               <p v-if="region || commune || mois || releve" style="color: black; font-weight: bold;"> {{ region }} -- {{ commune }} -- {{ superviseur }} -- {{ enqueteur }} -- {{ mois }} -- {{ releve }}</p>
+               <p v-if="region || commune || mois || releve" style="color: black; font-weight: bold;"> {{quest}} -- {{ region }} -- {{ commune }} -- {{ superviseur }} -- {{ enqueteur }} -- {{ mois }} -- {{ releve }}</p>
               
             </div>
             <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #F07D0A;">
@@ -22,8 +22,18 @@
                                 <a class="nav-link" href="/ref">REFERENTIELS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/s1">S1</a>
+                                <a class="nav-link" href="/saisie/01">S1</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/saisie/02">S2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/saisie/03">S3</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/saisie/04">S4</a>
+                            </li>
+
                             <!--<li class="nav-item">
                                         <a class="nav-link" href="/matiere">MATIERES</a>
                                     </li>
@@ -79,7 +89,7 @@ export default defineComponent({
         IonContent, IonHeader,
         IonFooter, IonTitle, IonToolbar, IonPage
     },
-    props: ['pageTitre', 'region', 'commune', 'superviseur', 'enqueteur', 'mois', 'releve'],
+    props: ['pageTitre', 'region', 'commune', 'superviseur', 'enqueteur', 'mois', 'releve', 'quest'],
     setup(props) {
 
         /***

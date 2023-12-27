@@ -119,7 +119,7 @@ module.exports={
     async addDatas(req, res){
         try {
             const datas=await Datas.bulkCreate(req.body)
-            res.send({success: 'datas succefly added'})
+            res.send({success: 'datas succefly added', datas: datas})
         } catch (error) {
             console.log("addDatas datas ", error);
             res.status(404).send({error: 'datas existe déja '+error})
@@ -324,6 +324,30 @@ module.exports={
         } catch (error) {
             console.log('Error getPointVenteByCommune  ', error);
             res.status(404).send({error: 'Error getPointVenteByCommune '+error})
+        }
+    },
+    async checkData(req, res){
+        try {
+            const datas=await sequelize.query("SELECT * from datas where commune=:commune and mois=:mois and variete=:variete and semaine=:semaine",{
+                replacements: {commune: req.params.commune, mois: req.params.mois, variete: req.params.variete, semaine: req.params.semaine},
+                type: QueryTypes.SELECT
+            })
+            res.send({datas: datas})
+        } catch (error) {
+            console.log('Error checkData  ', error);
+            res.status(404).send({error: 'Error checkData '+error})
+        }
+    },
+    async getDataInit(req, res){
+        try {
+            const datas=await sequelize.query("SELECT d.id, enqueteur, variete, superviseur, commune, mois, semaine, point_vente, type_releve, date_passage, prix1, quantite1, prix2, quantite2, observation, user, v.libelle_court, v.code from datas d join variete v on v.code=d.variete where v.section=:section and d.commune=:commune and d.mois=:mois and d.semaine=:semaine order by v.code",{
+                replacements: {section: req.params.section, commune: req.params.commune, mois: req.params.mois, semaine: req.params.semaine},
+                type: QueryTypes.SELECT
+            })
+            res.send({datas: datas})
+        } catch (error) {
+            console.log('Error getDataInit  ', error);
+            res.status(404).send({error: 'Error getDataInit '+error})
         }
     }
 

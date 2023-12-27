@@ -334,6 +334,13 @@ const Datas=sequelize.define('datas',{
             key: 'code'
         }
     },
+    variete:{
+        type: DataTypes.STRING,
+        references:{
+            model: Variete,
+            key: 'code'
+        }
+    },
     superviseur:{
         type: DataTypes.STRING,
         references:{
@@ -355,11 +362,11 @@ const Datas=sequelize.define('datas',{
             key: 'code'
         }
     },
-    type_point_vente:{
+    semaine:{
         type: DataTypes.STRING,
         references:{
             key: 'code',
-            model: Type_point_vente
+            model: Semaine
         }
     },
     point_vente:{
@@ -369,17 +376,24 @@ const Datas=sequelize.define('datas',{
             key: 'code'
         }
     },
+    type_releve:{
+        type: DataTypes.STRING,
+        references:{
+            key: 'code',
+            model: Type_releve
+        }
+    },
     date_passage: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     prix1:{
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: true
     },
     quantite1:{
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     prix2:{
         type: DataTypes.BIGINT,

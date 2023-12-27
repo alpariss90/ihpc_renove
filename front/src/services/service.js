@@ -57,7 +57,15 @@ export default {
     addPointVenteOne(point_vente){
         return API().post('point_vente/addOne', point_vente)
     },
-
+    checkData(commune, mois, variete, semaine){
+        return API().get('datas/check/'+commune+'/'+mois+'/'+variete+'/'+semaine)
+    },
+    addDatas(datas){
+        return API().post('datas/add', datas)
+    },
+    getData1(commune, mois, semaine){
+        return API().get('datas/get/Quest_O1/'+commune+'/'+mois+'/'+semaine)
+    },
 
     login(user){
         return API().post('login', user)

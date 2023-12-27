@@ -250,16 +250,16 @@
                             <table class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>REGION</th>
                                         <th>COMMUNE</th>
+                                        <th>TYPE</th>
                                         <th>CODE</th>
                                         <th>MARCHE (POINT DE VENTE)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="r in points_vente" :key="r.code">
-                                        <td>{{ r.libelle_region }}</td>
                                         <td>{{ r.libelle_commune }}</td>
+                                        <td>{{ r.libelle_type_point_vente }}</td>
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
                                     </tr>
