@@ -12,12 +12,11 @@
 
     <div class="row" style="background-color: #AFE1AF; " v-show="page == 1">
 
-        <h3>Quest_O1 </h3>
+        <h3>Quest_O2 </h3>
         <div class=" col-md-12 col-lg-12" style="overflow-y: scroll; max-height: 400px;">
             <table class="table table-bordered table-hover">
                 <thead class="sticky-top top-0">
                     <tr>
-                        <th>#</th>
                         <th>CODE</th>
                         <th>LIBELLE</th>
                         <th>DATE</th>
@@ -31,7 +30,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="v in datas" v-bind:key="v.code">
-                        <td>{{ com_compteur }}</td>
                         <td>{{ v.code }}</td>
                         <td>{{ v.libelle_court }}</td>
                         <td>
@@ -113,7 +111,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, onMounted, watch, computed } from 'vue';
+import { defineComponent, reactive, toRefs, onMounted, watch/*, computed, */ } from 'vue';
 import service from '../../services/service'
 export default defineComponent({
     name: 'q1Page',
@@ -135,8 +133,7 @@ export default defineComponent({
             success: '',
             error: '',
             point_ventes: [],
-            selectedRow: [],
-            compteur: 0
+            selectedRow: []
         })
 
 
@@ -237,7 +234,7 @@ export default defineComponent({
 
         const getData = async () => {
             try {
-                const response = await service.getData1(props.commune, props.mois, props.semaine);
+                const response = await service.getData2(props.commune, props.mois, props.semaine);
                 state.datas = response.data.datas
             } catch (error) {
                 console.log('Erreur getData ', error);
@@ -313,17 +310,13 @@ export default defineComponent({
 
         onMounted(async () => {
             //alert(props.commune+" "+props.mois+" "+props.semaine)
-            state.varietes = await getVarieteBySection('Quest_O1');
+            state.varietes = await getVarieteBySection('Quest_O2');
             verify();
             getAllType_pointVente()
             getPointVenteByCommune()
         })
 
 
-       const  com_compteur=computed(()=>{
-           // state.compteur=state.compteur+1
-            return 1
-        })
 
         watch(() => state.error, () => {
             if (state.error != '') {
@@ -359,7 +352,7 @@ export default defineComponent({
 
 
 
-        return { ...toRefs(state), addPointVente, getMaxPointVente, check, com_compteur }
+        return { ...toRefs(state), addPointVente, getMaxPointVente, check }
     }
 })
 </script>

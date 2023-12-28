@@ -407,7 +407,7 @@ const Datas=sequelize.define('datas',{
         type: DataTypes.TEXT,
         allowNull: true
     },
-    user:{
+    users:{
         type: DataTypes.STRING,
         references:{
             key: 'login',

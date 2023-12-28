@@ -18,7 +18,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in regions" :key="r.code">
+                                    <tr v-for="r in regions" :key="r.code" >
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
                                     </tr>
@@ -47,7 +47,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in communes" :key="r.code">
+                                    <tr v-for="r in com_commune" :key="r.code">
                                         <td>{{ r.libelle_region }}</td>
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
@@ -76,7 +76,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in types_releve" :key="r.code">
+                                    <tr v-for="r in com_type_releve" :key="r.code">
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
                                     </tr>
@@ -107,7 +107,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in mois" :key="r.code">
+                                    <tr v-for="r in com_mois" :key="r.code">
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
                                     </tr>
@@ -135,7 +135,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in semaines" :key="r.code">
+                                    <tr v-for="r in com_semaines" :key="r.code">
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.libelle }}</td>
                                     </tr>
@@ -196,7 +196,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in superviseurs" :key="r.code">
+                                    <tr v-for="r in com_superviseurs" :key="r.code">
                                         <td>{{ r.libelle }}</td>
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.nom_prenom }}</td>
@@ -226,7 +226,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="r in enqueteurs" :key="r.code">
+                                    <tr v-for="r in com_enqueteurs" :key="r.code">
                                         <td>{{ r.libelle }}</td>
                                         <td>{{ r.code }}</td>
                                         <td>{{ r.nom_prenom }}</td>
@@ -547,7 +547,46 @@ export default defineComponent({
         })
 
 
-        return { ...toRefs(state), isTrue, liste_variete }
+        const com_commune=computed(()=>{
+            return state.communes.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        const com_type_releve=computed(()=>{
+            return state.types_releve.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        const com_mois=computed(()=>{
+            return state.mois.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        const com_enqueteurs=computed(()=>{
+            return state.enqueteurs.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        const com_superviseurs=computed(()=>{
+            return state.superviseurs.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        const com_semaines=computed(()=>{
+            return state.semaines.filter(f=>{
+                return f.code!="00"
+            })
+        })
+
+        
+
+
+        return { ...toRefs(state), isTrue, liste_variete, com_semaines, com_commune, com_type_releve, com_superviseurs, com_enqueteurs, com_mois }
     }
 })
 </script>

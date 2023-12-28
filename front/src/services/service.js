@@ -66,6 +66,15 @@ export default {
     getData1(commune, mois, semaine){
         return API().get('datas/get/Quest_O1/'+commune+'/'+mois+'/'+semaine)
     },
+    updateData(datas){
+        return API().post('datas/update', datas)
+    },
+    getData2(commune, mois, semaine){
+        return API().get('datas/get/Quest_O2/'+commune+'/'+mois+'/'+semaine)
+    },
+    getData3(commune, mois, semaine){
+        return API().get('datas/get/Quest_O3/'+commune+'/'+mois+'/'+semaine)
+    },
 
     login(user){
         return API().post('login', user)
