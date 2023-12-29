@@ -75,6 +75,19 @@ export default {
     getData3(commune, mois, semaine){
         return API().get('datas/get/Quest_O3/'+commune+'/'+mois+'/'+semaine)
     },
+    getData4(commune, mois, semaine){
+        return API().get('datas/get/Quest_HE_S1/'+commune+'/'+mois+'/'+semaine)
+    },
+    getData5(commune, mois, semaine){
+        return API().get('datas/get/Quest_HE_S2/'+commune+'/'+mois+'/'+semaine)
+    },
+    getData6(commune, mois, semaine){
+        return API().get('datas/get/Quest_HE_S3/'+commune+'/'+mois+'/'+semaine)
+    },
+    getData7(commune, mois, semaine){
+        return API().get('datas/get/Quest_HE_S4/'+commune+'/'+mois+'/'+semaine)
+    },
+
 
     login(user){
         return API().post('login', user)

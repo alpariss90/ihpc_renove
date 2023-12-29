@@ -87,6 +87,22 @@
             :type_releve="type_releve.code" :enqueteur="enqueteur.code" :superviseur="superviseur.code"
             v-if="(semaine=='01' || semaine=='02' || semaine=='03' || semaine=='04') && commune.code > 0 && mois.code > 0 && type_releve.code > 0 && quest=='Quest_O3'"></q3-page>
 
+            <h1-page :commune="commune.code" :mois="mois.code"  :semaine="semaine"
+            :type_releve="type_releve.code" :enqueteur="enqueteur.code" :superviseur="superviseur.code"
+            v-if="(semaine=='01') && commune.code > 0 && mois.code > 0 && type_releve.code > 0 && quest=='Quest_HE_S1'"></h1-page>
+
+            <h2-page :commune="commune.code" :mois="mois.code"  :semaine="semaine"
+            :type_releve="type_releve.code" :enqueteur="enqueteur.code" :superviseur="superviseur.code"
+            v-if="(semaine=='02') && commune.code > 0 && mois.code > 0 && type_releve.code > 0 && quest=='Quest_HE_S2'"></h2-page>
+
+            <h3-page :commune="commune.code" :mois="mois.code"  :semaine="semaine"
+            :type_releve="type_releve.code" :enqueteur="enqueteur.code" :superviseur="superviseur.code"
+            v-if="(semaine=='03') && commune.code > 0 && mois.code > 0 && type_releve.code > 0 && quest=='Quest_HE_S3'"></h3-page>
+
+            <h4-page :commune="commune.code" :mois="mois.code"  :semaine="semaine"
+            :type_releve="type_releve.code" :enqueteur="enqueteur.code" :superviseur="superviseur.code"
+            v-if="(semaine=='04') && commune.code > 0 && mois.code > 0 && type_releve.code > 0 && quest=='Quest_HE_S4'"></h4-page>
+
 
 
         </div>
@@ -100,11 +116,15 @@ import { useRoute } from 'vue-router';
 import q1Page from './q1Page'
 import q2Page from './q2Page'
 import q3Page from './q3Page'
+import h1Page from './h1Page'
+import h2Page from './h2Page'
+import h3Page from './h3Page'
+import h4Page from './h4Page'
 
 
 export default defineComponent({
     name: 'saisiePage',
-    components:{q1Page,q2Page,q3Page},
+    components:{q1Page,q2Page,q3Page, h1Page, h2Page, h3Page, h4Page},
     setup() {
         const route = useRoute();
         const state = reactive({
