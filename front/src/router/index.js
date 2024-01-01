@@ -3,6 +3,7 @@ import HomePage from '../views/HomePage.vue'
 import RefListePage from '../views/pages/refListePage.vue'
 import LoginPage from '../views/pages/loginPage.vue'
 import saisiePage from '../views/pages/saisiePage.vue'
+import dataPage from '../views/pages/dataPage.vue'
 
 
 const routes= [
@@ -26,6 +27,10 @@ const routes= [
   {
     path: '/saisie/:semaine',
     component: saisiePage
+  },
+  {
+    path: '/data',
+    component: dataPage
   }
 ]
 

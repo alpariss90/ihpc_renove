@@ -87,6 +87,9 @@ export default {
     getData7(commune, mois, semaine){
         return API().get('datas/get/Quest_HE_S4/'+commune+'/'+mois+'/'+semaine)
     },
+    getDataSaisi(quest, commune, mois, semaine){
+        return API().get('datas/get-saisi/'+quest+'/'+commune+'/'+mois+'/'+semaine)
+    },
 
 
     login(user){

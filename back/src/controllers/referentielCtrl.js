@@ -418,6 +418,26 @@ module.exports = {
       res.status(404).send({ error: "Error getDataInit " + error });
     }
   },
+  async getDataSaisi(req, res) {
+    try {
+      const datas = await sequelize.query(
+        "SELECT d.id, enqueteur, variete, superviseur, d.commune, mois, semaine, point_vente, type_releve, date_passage, prix1, quantite1, prix2, quantite2, observation, users, v.libelle_court, v.code, p.libelle as libelle_point_vente from datas d join variete v on v.code=d.variete join point_vente p on p.code=d.point_vente where v.section=:section and d.commune=:commune and d.mois=:mois and d.semaine=:semaine and d.date_passage is not null and d.prix1 is not null and d.quantite1 is not null order by v.code",
+        {
+          replacements: {
+            section: req.params.section,
+            commune: req.params.commune,
+            mois: req.params.mois,
+            semaine: req.params.semaine,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      res.send({ datas: datas });
+    } catch (error) {
+      console.log("Error getDataInit  ", error);
+      res.status(404).send({ error: "Error getDataInit " + error });
+    }
+  },
   async updateData(req, res) {
     const data = req.body;
     try {
