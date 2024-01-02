@@ -71,14 +71,17 @@
         <div class="row p-3">
 
             <div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
-                <button @click="getMaxPointVente() && page++" class="btn btn-warning">
+                <br><button @click="getMaxPointVente() && page++" class="btn btn-warning">
                     Ajouter point de vente
                 </button>
             </div>
 
 
-            <div class="col-md-1 col-lg-1 offset-md-5 offset-lg-5 ">
-                <button class="btn btn-success" @click="check()">Valider</button>
+            <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4 ">
+              <label> Password :</label><input class="form-control from-control-sm" type="password" v-model="passwordIns"  autocomplete="new-password"/>
+            </div>
+            <div class="col-md-1 col-lg-1 ">
+                <br><button class="btn btn-success" @click="check()" v-if="passwordIns.length > 0">Valider</button>
             </div>
 
         </div>
@@ -133,7 +136,10 @@ export default defineComponent({
             success: '',
             error: '',
             point_ventes: [],
-            selectedRow: []
+            selectedRow: [],
+            users: [{ login: 'Gaichatou', password: '@?gbatoure@?' }, { login: 'Fourera', password: '!@fekade!@' }],
+            user: {},
+            passwordIns: ""
         })
 
 
@@ -255,10 +261,18 @@ export default defineComponent({
             }
         }
 
-        const updateData= async ()=>{
+        const updateData = async () => {
+
+            for (let i = 0; i < state.selectedRow.length; i++) {
+                state.selectedRow[i].enqueteur = props.enqueteur
+                state.selectedRow[i].superviseur = props.superviseur
+                state.selectedRow[i].type_releve = props.type_releve
+                state.selectedRow[i].users = state.user.login
+            }
+
             try {
                 const response = await service.updateData(state.selectedRow);
-                state.success= response.data.success
+                state.success = response.data.success
             } catch (error) {
                 console.log('Erreur updateData ', error);
             }
@@ -290,13 +304,18 @@ export default defineComponent({
                 if (!etat) {
                     state.error = 'Veuillez remplir tout les champs'
                 } else {
-                    for (let i = 0; i < state.selectedRow.length; i++) {
-                        state.selectedRow[i].enqueteur=props.enqueteur
-                        state.selectedRow[i].superviseur=props.superviseur
-                        state.selectedRow[i].type_releve=props.type_releve
-
+                    if (state.passwordIns == state.users[0].password) {
+                        state.user = state.users[0]
+                        updateData()
+                        state.passwordIns=""
+                    } else if (state.passwordIns == state.users[1].password) {
+                        state.user = state.users[1]
+                        updateData()
+                        state.passwordIns=""
+                    } else {
+                        state.error = "Veuillez entrer des identifiant corrects"
+                        state.passwordIns=""
                     }
-                    updateData()
                 }
             }
 
@@ -320,13 +339,13 @@ export default defineComponent({
 
         watch(() => state.error, () => {
             if (state.error != '') {
-                setTimeout(function () { state.error = '' }, 3000);
+                setTimeout(function () { state.error = '' }, 7000);
             }
         })
 
         watch(() => state.success, () => {
             if (state.success != '') {
-                setTimeout(function () { state.success = '' }, 3000);
+                setTimeout(function () { state.success = '' }, 7000);
             }
         })
 

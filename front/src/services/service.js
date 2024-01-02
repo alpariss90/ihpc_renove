@@ -90,7 +90,9 @@ export default {
     getDataSaisi(quest, commune, mois, semaine){
         return API().get('datas/get-saisi/'+quest+'/'+commune+'/'+mois+'/'+semaine)
     },
-
+    getAllDataSaisi(){
+        return API().get('datas/get-saisi/')
+    },
 
     login(user){
         return API().post('login', user)

@@ -41,16 +41,16 @@
                                 placeholder="prix 1" />
                         </td>
                         <td>
-                            <input type="number" class="form-control from-control-sm" v-model="v.quantite1"
+                            <input type="number" class="form-control from-control-sm" v-model="v.quantite1" disabled="true"
                                 placeholder="qte1" />
                         </td>
                         <td>
-                            <input type="number" class="form-control from-control-sm" :disabled="type_releve == '01'"
-                                v-model="v.prix2" placeholder="prix 2" />
+                            <input type="number" class="form-control from-control-sm" disabled="true" v-model="v.prix2"
+                                placeholder="prix 2" />
                         </td>
                         <td>
-                            <input type="number" class="form-control from-control-sm" :disabled="type_releve == '01'"
-                                v-model="v.quantite2" placeholder="qte2" />
+                            <input type="number" class="form-control from-control-sm" disabled="true" v-model="v.quantite2"
+                                placeholder="qte2" />
                         </td>
                         <td>
                             <select class="form-control from-control-sm" name="zd" v-model="v.point_vente">
@@ -71,14 +71,17 @@
         <div class="row p-3">
 
             <div class="col-md-2 col-lg-2 offset-md-4 offset-lg-4">
-                <button @click="getMaxPointVente() && page++" class="btn btn-warning">
+                <br><button @click="getMaxPointVente() && page++" class="btn btn-warning">
                     Ajouter point de vente
                 </button>
             </div>
 
 
-            <div class="col-md-1 col-lg-1 offset-md-5 offset-lg-5 ">
-                <button class="btn btn-success" @click="check()">Valider</button>
+            <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4 ">
+              <label> Password :</label><input class="form-control from-control-sm" type="password" v-model="passwordIns"  autocomplete="new-password"/>
+            </div>
+            <div class="col-md-1 col-lg-1 ">
+                <br><button class="btn btn-success" @click="check()" v-if="passwordIns.length > 0">Valider</button>
             </div>
 
         </div>
@@ -134,7 +137,10 @@ export default defineComponent({
             error: '',
             point_ventes: [],
             selectedRow: [],
-            compteur: 0
+            compteur: 0,
+            users: [{ login: 'Gaichatou', password: '@?gbatoure@?' }, { login: 'Fourera', password: '!@fekade!@' }],
+            user: {},
+            passwordIns: ""
         })
 
 
@@ -256,10 +262,20 @@ export default defineComponent({
             }
         }
 
-        const updateData= async ()=>{
+        const updateData = async () => {
+
+            for (let i = 0; i < state.selectedRow.length; i++) {
+                state.selectedRow[i].enqueteur = props.enqueteur
+                state.selectedRow[i].superviseur = props.superviseur
+                state.selectedRow[i].type_releve = '01'
+                state.selectedRow[i].quantite1 = 0
+                state.selectedRow[i].users = state.user.login
+            }
+
+
             try {
                 const response = await service.updateData(state.selectedRow);
-                state.success= response.data.success
+                state.success = response.data.success
             } catch (error) {
                 console.log('Erreur updateData ', error);
             }
@@ -271,7 +287,7 @@ export default defineComponent({
             state.selectedRow = []
 
             state.selectedRow = state.datas.filter(e => {
-                return e.date_passage != null || e.quantite1 != null || e.prix1 != null || e.quantite2 != null || e.prix2 != null || e.point_vente != '00' || e.observation != null
+                return e.date_passage != null || e.prix1 != null || e.point_vente != '00' || e.observation != null
             })
 
             //alert(state.selectedRow.length)
@@ -279,7 +295,7 @@ export default defineComponent({
             let etat = true;
 
             for (let i = 0; i < state.selectedRow.length; i++) {
-                if (state.selectedRow[i].date_passage == null || state.selectedRow[i].quantite1 == null || state.selectedRow[i].prix1 == null || state.selectedRow[i].point_vente == "00" || state.selectedRow[i].observation == null) {
+                if (state.selectedRow[i].date_passage == null || state.selectedRow[i].prix1 == null || state.selectedRow[i].point_vente == "00" || state.selectedRow[i].observation == null) {
                     etat = false;
                 }
             }
@@ -291,13 +307,18 @@ export default defineComponent({
                 if (!etat) {
                     state.error = 'Veuillez remplir tout les champs'
                 } else {
-                    for (let i = 0; i < state.selectedRow.length; i++) {
-                        state.selectedRow[i].enqueteur=props.enqueteur
-                        state.selectedRow[i].superviseur=props.superviseur
-                        state.selectedRow[i].type_releve=props.type_releve
-
+                    if (state.passwordIns == state.users[0].password) {
+                        state.user = state.users[0]
+                        updateData()
+                        state.passwordIns=""
+                    } else if (state.passwordIns == state.users[1].password) {
+                        state.user = state.users[1]
+                        updateData()
+                        state.passwordIns=""
+                    } else {
+                        state.error = "Veuillez entrer des identifiant corrects"
+                        state.passwordIns=""
                     }
-                    updateData()
                 }
             }
 
@@ -318,20 +339,20 @@ export default defineComponent({
         })
 
 
-       const  com_compteur=computed(()=>{
-           // state.compteur=state.compteur+1
+        const com_compteur = computed(() => {
+            // state.compteur=state.compteur+1
             return 1
         })
 
         watch(() => state.error, () => {
             if (state.error != '') {
-                setTimeout(function () { state.error = '' }, 3000);
+                setTimeout(function () { state.error = '' }, 7000);
             }
         })
 
         watch(() => state.success, () => {
             if (state.success != '') {
-                setTimeout(function () { state.success = '' }, 3000);
+                setTimeout(function () { state.success = '' }, 7000);
             }
         })
 

@@ -469,6 +469,22 @@ module.exports = {
       return 2;
     }
   },
+  async getAllDataSaisi(req, res) {
+    try {
+      const datas = await sequelize.query(
+        "SELECT d.id, rr.libelle as region, en.nom_prenom as enqueteur, variete, s.nom_prenom as superviseur, cm.libelle as commune, ms.libelle as mois, se.libelle as semaine, tr.libelle as type_releve, date_passage, prix1, quantite1, prix2, quantite2, observation, users, v.libelle_court, v.code, p.libelle as point_vente, v.section from datas d join variete v on v.code=d.variete join point_vente p on p.code=d.point_vente join superviseur s on s.code=d.superviseur join enqueteur en on en.code=d.enqueteur join commune cm on cm.code=d.commune join region rr on rr.code=cm.region join mois ms on ms.code=d.mois join semaine se on se.code=d.semaine join type_releve tr on tr.code=d.type_releve where  d.date_passage is not null and d.prix1 is not null and d.quantite1 is not null order by d.commune, d.mois, d.semaine, v.section, v.code",
+        {
+          replacements: {
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      res.send({ datas: datas });
+    } catch (error) {
+      console.log("Error getAllDataSaisi  ", error);
+      res.status(404).send({ error: "Error getAllDataSaisi " + error });
+    }
+  }
 
   /*async edit(req, res){
         try {

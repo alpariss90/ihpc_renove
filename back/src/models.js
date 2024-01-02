@@ -392,7 +392,7 @@ const Datas=sequelize.define('datas',{
         allowNull: true
     },
     quantite1:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: true
     },
     prix2:{
@@ -400,7 +400,7 @@ const Datas=sequelize.define('datas',{
         allowNull: true
     },
     quantite2:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: true
     },
     observation:{

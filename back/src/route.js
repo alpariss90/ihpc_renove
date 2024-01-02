@@ -18,6 +18,7 @@ module.exports=(app)=>{
     app.post('/datas/add', referentielCtrl.addDatas)
     app.get('/datas/get/:section/:commune/:mois/:semaine', referentielCtrl.getDataInit)
     app.get('/datas/get-saisi/:section/:commune/:mois/:semaine', referentielCtrl.getDataSaisi)
+    app.get('/datas/get-saisi/', referentielCtrl.getAllDataSaisi)
     app.post('/datas/update', referentielCtrl.updateData) 
 
 

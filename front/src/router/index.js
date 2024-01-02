@@ -4,6 +4,7 @@ import RefListePage from '../views/pages/refListePage.vue'
 import LoginPage from '../views/pages/loginPage.vue'
 import saisiePage from '../views/pages/saisiePage.vue'
 import dataPage from '../views/pages/dataPage.vue'
+import dataAllPage from '../views/pages/dataAllPage'
 
 
 const routes= [
@@ -31,6 +32,10 @@ const routes= [
   {
     path: '/data',
     component: dataPage
+  },
+  {
+    path: '/all-data',
+    component: dataAllPage
   }
 ]
 

@@ -58,8 +58,10 @@
                     <table class="table table-bordered table-hover">
                         <thead class="sticky-top top-0">
                             <tr>
+                                <th>AGENT</th>
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
+                                <th>RELEVE</th>
                                 <th>DATE</th>
                                 <th>PRIX 1</th>
                                 <th>QTE1</th>
@@ -71,8 +73,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in data1" v-bind:key="v.code">
+                                <td>{{ v.users }}</td>
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
+                                <td>{{ v.type_releve }}</td>
                                 <td>
                                     {{ v.date_passage }}
                                 </td>
@@ -114,8 +118,10 @@
                     <table class="table table-bordered table-hover">
                         <thead class="sticky-top top-0">
                             <tr>
+                                <th>AGENT</th>
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
+                                <th>RELEVE</th>
                                 <th>DATE</th>
                                 <th>PRIX 1</th>
                                 <th>QTE1</th>
@@ -127,8 +133,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in data2" v-bind:key="v.code">
+                                <td>{{ v.users }}</td>
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
+                                <td>{{ v.type_releve }}</td>
                                 <td>
                                     {{ v.date_passage }}
                                 </td>
@@ -170,8 +178,10 @@
                     <table class="table table-bordered table-hover">
                         <thead class="sticky-top top-0">
                             <tr>
+                                <th>AGENT</th>
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
+                                <th>RELEVE</th>
                                 <th>DATE</th>
                                 <th>PRIX 1</th>
                                 <th>QTE1</th>
@@ -183,8 +193,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in data3" v-bind:key="v.code">
+                                <td>{{ v.users }}</td>
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
+                                <td>{{ v.type_releve }}</td>
                                 <td>
                                     {{ v.date_passage }}
                                 </td>
@@ -227,8 +239,10 @@
                     <table class="table table-bordered table-hover">
                         <thead class="sticky-top top-0">
                             <tr>
+                                <th>AGENT</th>
                                 <th>CODE</th>
                                 <th>LIBELLE</th>
+                                <th>RELEVE</th>
                                 <th>DATE</th>
                                 <th>PRIX 1</th>
                                 <th>QTE1</th>
@@ -240,8 +254,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="v in data4" v-bind:key="v.code">
+                                <td>{{ v.users }}</td>
                                 <td>{{ v.code }}</td>
                                 <td>{{ v.libelle_court }}</td>
+                                <td>{{ v.type_releve }}</td>
                                 <td>
                                     {{ v.date_passage }}
                                 </td>

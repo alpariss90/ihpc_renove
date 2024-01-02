@@ -36,6 +36,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/data">Données</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/all-data">All Données</a>
+                            </li>
 
                             <!--<li class="nav-item">
                                         <a class="nav-link" href="/matiere">MATIERES</a>
