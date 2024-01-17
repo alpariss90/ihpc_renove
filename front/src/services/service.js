@@ -1,6 +1,11 @@
 import API from './API'
 
 
+/*const headers = {
+    'Authorization': 'Bearer my-token',
+    'My-Custom-Header': 'foobar'
+};*/
+
 export default {
      getAllRegion(){
         return API().get('region/liste')
@@ -96,5 +101,11 @@ export default {
 
     login(user){
         return API().post('login', user)
+    },
+    register(user){
+        return API().post('register', user)
+    },
+    valideToken(){
+        return API().get('valide-token')
     }
 }

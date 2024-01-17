@@ -1,3 +1,4 @@
+const authCtrl = require('./controllers/authCtrl')
 const referentielCtrl=require('./controllers/referentielCtrl')
 
 
@@ -51,6 +52,7 @@ module.exports=(app)=>{
     app.get('/point_vente/:commune', referentielCtrl.getPointVenteByCommune)
 
 
-    app.post('/login',  referentielCtrl.getUserByLoginAndpassword)
+    app.post('/login',  authCtrl.getUserByLoginAndpassword)
+    app.post('/register', referentielCtrl.addUser)
 }
 

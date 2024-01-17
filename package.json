@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "vue-pivottable": "^0.4.65"
+  }
+}

@@ -29,18 +29,13 @@ import "bootstrap"
 /* Theme variables */
 import './theme/variables.css'; 
 
-
 axios.defaults.withCredentials=false
-
-
 
 const app = createApp(App)
   .use(IonicVue)
   .use(VueAxios, axios)
   .use(router);
-
   app.component('layout-template', layoutTemplate)
-  
 router.isReady().then(() => {
   app.mount('#app');
 });

@@ -78,10 +78,13 @@
 
 
             <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4 ">
-              <label> Password :</label><input class="form-control from-control-sm" type="password" v-model="passwordIns"  autocomplete="new-password"/>
-            </div>
+                <label> Utilisateur :</label>
+              <select class="form-control from-control-sm" v-model="user_selected">
+                <option value="Gaichatou">Gaichatou</option>
+                <option value="Fourera">Fourera</option>
+              </select>            </div>
             <div class="col-md-1 col-lg-1 ">
-                <br><button class="btn btn-success" @click="check()" v-if="passwordIns.length > 0">Valider</button>
+                <br><button class="btn btn-success" @click="check()" v-if="user_selected.length > 0">Valider</button>
             </div>
 
         </div>
@@ -140,7 +143,8 @@ export default defineComponent({
             compteur: 0,
             users: [{ login: 'Gaichatou', password: '@?gbatoure@?' }, { login: 'Fourera', password: '!@fekade!@' }],
             user: {},
-            passwordIns: ""
+            passwordIns: "",
+            user_selected:""
         })
 
 
@@ -269,7 +273,7 @@ export default defineComponent({
                 state.selectedRow[i].superviseur = props.superviseur
                 state.selectedRow[i].type_releve = '01'
                 state.selectedRow[i].quantite1 = 0
-                state.selectedRow[i].users = state.user.login
+                state.selectedRow[i].users = state.user
             }
 
 
@@ -307,7 +311,10 @@ export default defineComponent({
                 if (!etat) {
                     state.error = 'Veuillez remplir tout les champs'
                 } else {
-                    if (state.passwordIns == state.users[0].password) {
+                    state.user = state.user_selected
+                        updateData()
+                        state.user_selected=""
+                   /* if (state.passwordIns == state.users[0].password) {
                         state.user = state.users[0]
                         updateData()
                         state.passwordIns=""
@@ -318,7 +325,7 @@ export default defineComponent({
                     } else {
                         state.error = "Veuillez entrer des identifiant corrects"
                         state.passwordIns=""
-                    }
+                    }*/
                 }
             }
 

@@ -20,6 +20,15 @@ module.exports = {
   async accueil(req, res) {
     res.send({ message: "Welcome IHPC" });
   },
+  async addUser(req, res){
+    try {
+      const user= await User.create(req.body)
+      res.send({success: "User ajouté avec success", User: user})
+    } catch (error) {
+      console.log("addUser user", error);
+      res.status(404).send({error: error})    
+    }
+  },
   async addRegion(req, res) {
     try {
       const regions = await Region.bulkCreate(req.body);
@@ -141,7 +150,7 @@ module.exports = {
     }
   },
   async getAllMois(req, res) {
-    console.log(req.session.user);
+    //console.log(req.session.user);
     try {
       const mois = await Mois.findAll();
       return res.send({ mois: mois });
@@ -285,22 +294,6 @@ module.exports = {
     } catch (error) {
       console.log("Error getAllVariete  " + error);
       res.status(404).send({ error: "Error getAllVariete " + error });
-    }
-  },
-  async getUserByLoginAndpassword(req, res) {
-    if (!req.session.user) req.session.user = "test";
-    try {
-      const user = await sequelize.query(
-        "select * from users where login=:login and password=:password",
-        {
-          replacements: { login: req.body.login, password: req.body.password },
-          type: QueryTypes.SELECT,
-        }
-      );
-      res.send({ user: user });
-    } catch (error) {
-      console.log("Erruer login ", error);
-      res.status(404).send({ error: error });
     }
   },
   async getVarieteBySection(req, res) {
