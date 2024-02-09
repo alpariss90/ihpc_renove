@@ -75,6 +75,15 @@
                     Ajouter point de vente
                 </button>
             </div>
+           <!--
+            <div class="alert alert-danger" v-if="error != ''">
+        <strong>Error!</strong> {{ error }}
+        <hr>
+    </div>
+    <div class="alert alert-success" v-if="success != ''">
+        <strong>success!</strong> {{ success }}
+        <hr>
+    </div>-->
 
 
             <div class="col-md-1 col-lg-1 offset-md-4 offset-lg-4 ">
@@ -82,6 +91,7 @@
               <select class="form-control from-control-sm" v-model="user_selected">
                 <option value="Gaichatou">Gaichatou</option>
                 <option value="Fourera">Fourera</option>
+                <option value="Rachidou">Rachidou</option>
               </select>                        </div>
             <div class="col-md-1 col-lg-1 ">
                 <br><button class="btn btn-success" @click="check()" v-if="user_selected.length > 0">Valider</button>
@@ -222,7 +232,7 @@ export default defineComponent({
             for (let i = 0; i < state.varietes.length; i++) {
                 datas1.push(
                     {
-                        enqueteur: '00', variete: state.varietes[i].code, superviseur: '00',
+                        enqueteur: props.enqueteur, variete: state.varietes[i].code, superviseur: '00',
                         commune: props.commune, mois: props.mois, semaine: props.semaine, point_vente: '00', users: '00'
                     }
                 )
@@ -234,7 +244,7 @@ export default defineComponent({
         const checkData = async () => {
             //alert("a"+" "+props.commune+" "+props.mois+" "+state.varietes[0].code+" "+props.semaine)
             try {
-                const response = await service.checkData(props.commune, props.mois, state.varietes[0].code, props.semaine);
+                const response = await service.checkData(props.commune, props.mois, state.varietes[0].code, props.semaine, props.enqueteur);
 
                 return response.data.datas.length;
             } catch (error) {
@@ -245,7 +255,7 @@ export default defineComponent({
 
         const getData = async () => {
             try {
-                const response = await service.getData4(props.commune, props.mois, props.semaine);
+                const response = await service.getData4(props.commune, props.mois, props.semaine, props.enqueteur);
                 state.datas = response.data.datas
             } catch (error) {
                 console.log('Erreur getData ', error);
@@ -279,8 +289,10 @@ export default defineComponent({
 
             try {
                 const response = await service.updateData(state.selectedRow);
+                alert("Données mise à jour")
                 state.success = response.data.success
             } catch (error) {
+                alert("Erreur mise à jour donées")
                 console.log('Erreur updateData ', error);
             }
         }
@@ -306,9 +318,11 @@ export default defineComponent({
 
 
             if (state.selectedRow.length == 0) {
+                alert('Veuillez remplir au moins une ligne')
                 state.error = 'Veuillez remplir au moins une ligne'
             } else {
                 if (!etat) {
+                    alert('Veuillez remplir tout les champs')
                     state.error = 'Veuillez remplir tout les champs'
                 } else {
                     state.user = state.user_selected
@@ -365,19 +379,25 @@ export default defineComponent({
 
 
         watch(() => props.commune, async () => {
-            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0 && props.enqueteur > 0) {
                 verify()
             }
         })
 
         watch(() => props.mois, async () => {
-            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0 && props.enqueteur > 0) {
                 verify()
             }
         })
 
         watch(() => props.semaine, async () => {
-            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0) {
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0 && props.enqueteur > 0) {
+                verify()
+            }
+        })
+
+        watch(() => props.enqueteur, async () => {
+            if (props.commune > 0 && props.mois > 0 && props.semaine > 0 && props.type_releve > 0 && props.enqueteur > 0) {
                 verify()
             }
         })

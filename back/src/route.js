@@ -17,8 +17,8 @@ module.exports=(app)=>{
     app.post('/section/add', referentielCtrl.addSection) 
     app.post('/variete/add', referentielCtrl.addVariete) 
     app.post('/datas/add', referentielCtrl.addDatas)
-    app.get('/datas/get/:section/:commune/:mois/:semaine', referentielCtrl.getDataInit)
-    app.get('/datas/get-saisi/:section/:commune/:mois/:semaine', referentielCtrl.getDataSaisi)
+    app.get('/datas/get/:section/:commune/:mois/:semaine/:enqueteur', referentielCtrl.getDataInit)
+    app.get('/datas/get-saisi/:section/:commune/:mois/:semaine/:enqueteur', referentielCtrl.getDataSaisi)
     app.get('/datas/get-saisi/', referentielCtrl.getAllDataSaisi)
     app.post('/datas/update', referentielCtrl.updateData) 
 
@@ -40,7 +40,7 @@ module.exports=(app)=>{
 
 
 
-    app.get('/datas/check/:commune/:mois/:variete/:semaine', referentielCtrl.checkData) 
+    app.get('/datas/check/:commune/:mois/:variete/:semaine/:enqueteur', referentielCtrl.checkData) 
 
 
 

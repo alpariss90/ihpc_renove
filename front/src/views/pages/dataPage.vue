@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-lg-1 col-sm-1 col-xs-1">
                             <label>COMMUNE</label>
-                            <select class="form-control form-control-sm" name="dep" id="dep" v-model="commune">
+                            <select class="form-control form-control-sm" name="dep" id="dep" v-model="commune" @change="getEnqueteurByRegion">
                                 <option v-for="d in com_liste_commune" :key="d.code" :value="d">{{
                                     d.libelle }}</option>
                             </select>
@@ -46,6 +46,17 @@
                                 </option>
                             </select>
                         </div>
+
+
+                        <div class="col-lg-2 col-sm-2 col-xs-2">
+                            <label>ENQUETEURS </label>
+                            <select class="form-control form-control-sm" name="enq" v-model="enqueteur">
+                                <option v-for="c in com_liste_enqueteur" :key="c.code" :value="c">{{ c.nom_prenom }}
+                                </option>
+                            </select>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -302,6 +313,7 @@
 <script>
 import { defineComponent, reactive, toRefs, onMounted, computed, watch } from 'vue';
 import service from '../../services/service'
+//import { stat } from 'fs';
 
 
 
@@ -314,11 +326,13 @@ export default defineComponent({
             region: {},
             commune: {},
             semaine: {},
+            enqueteur: {},
             mois: {},
             regions: [],
             communes: [],
             moiss: [],
             semaines: [],
+            enqueteurs: [],
             error: '',
             success: '',
             userConnected: 'alpariss', //implement after session implementation
@@ -374,12 +388,21 @@ export default defineComponent({
             }
         }
 
+        const getEnqueteurByRegion = async () => {
+            try {
+                const response = await service.getEnqueteurByRegion(state.region.code);
+                state.enqueteurs = response.data.enqueteurs
+            } catch (error) {
+                console.log('Erreur getCommuneByRegion ', error);
+            }
+        }
+
         
 
 
         const getDataSaisiByQuest = async (quest) => {
             try {
-                const response = await service.getDataSaisi(quest, state.commune.code, state.mois.code, state.semaine.code)
+                const response = await service.getDataSaisi(quest, state.commune.code, state.mois.code, state.semaine.code, state.enqueteur.code)
                 return response.data.datas
             } catch (error) {
                 console.log('Erreur getDataSaisiByQuest ', error);
@@ -460,6 +483,12 @@ export default defineComponent({
             })
         })
 
+        const com_liste_enqueteur = computed(() => {
+            return state.enqueteurs.filter(f => {
+                return f.code != "00"
+            })
+        })
+
        
 
 
@@ -484,6 +513,7 @@ export default defineComponent({
             state.commune = {}
             state.mois = {}
             state.semaine = {}
+            state.enqueteur= {}
             state.data1 = []
             state.data2 = []
             state.data3 = []
@@ -492,7 +522,7 @@ export default defineComponent({
         })
 
         watch(() => state.commune.code, async () => {
-            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0) {
+            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0  && state.enqueteur.code > 0) {
                 getQuestHybrideBySemaine()
                 state.data1 = await getDataSaisiByQuest('Quest_O1')
                 state.data2 = await getDataSaisiByQuest('Quest_O2')
@@ -502,12 +532,27 @@ export default defineComponent({
                 state.q4 = ""
                     state.mois = {}
                 state.semaine = {}
+                state.enqueteur={}
             }
 
         })
 
         watch(() => state.mois.code, async () => {
-            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0) {
+            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0  && state.enqueteur.code > 0) {
+                getQuestHybrideBySemaine()
+                state.data1 = await getDataSaisiByQuest('Quest_O1')
+                state.data2 = await getDataSaisiByQuest('Quest_O2')
+                state.data3 = await getDataSaisiByQuest('Quest_O3')
+                state.data4 = await getDataSaisiByQuest(state.q4)
+            } else {
+                state.q4 = ""
+                    state.semaine = {}
+                    state.enqueteur= {}
+            }
+        })
+
+        watch(() => state.enqueteur.code, async () => {
+            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0  && state.enqueteur.code > 0) {
                 getQuestHybrideBySemaine()
                 state.data1 = await getDataSaisiByQuest('Quest_O1')
                 state.data2 = await getDataSaisiByQuest('Quest_O2')
@@ -520,7 +565,7 @@ export default defineComponent({
         })
 
         watch(() => state.semaine.code, async () => {
-            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0) {
+            if (state.commune.code > 0 && state.mois.code > 0 && state.semaine.code > 0 && state.enqueteur.code > 0) {
                 getQuestHybrideBySemaine()
                 state.data1 = await getDataSaisiByQuest('Quest_O1')
                 state.data2 = await getDataSaisiByQuest('Quest_O2')
@@ -553,7 +598,7 @@ export default defineComponent({
             service, com_liste_mois, com_liste_semaine,
             com_region, com_commune, com_semaine, com_liste_commune,
             com_mois, getCommuneByRegion,
-            getAllMois, getAllSemaine, com_tiltePage
+            getAllMois, getAllSemaine, com_tiltePage, getEnqueteurByRegion, com_liste_enqueteur
         }
     }
 })

@@ -58,7 +58,7 @@
                                 <option v-for="z in com_liste_type_releve" :key="z.code" :value="z">{{ z.libelle }}</option>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-sm-2 col-xs-2" v-show="mois.code > 0 && commune.code > 0">
+                        <div class="col-lg-2 col-sm-2 col-xs-2" v-show="mois.code > 0 && commune.code > 0 && enqueteur.code > 0">
                             <label>QUESTIONNAIRE</label>
                             <select class="form-control form-control-sm" name="quest" v-model="quest">
                                 <option value="Quest_O1" v-if="semaine=='01' || semaine=='02' || semaine=='03' || semaine=='04'">Quest_O1</option>

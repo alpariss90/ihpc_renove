@@ -62,38 +62,38 @@ export default {
     addPointVenteOne(point_vente){
         return API().post('point_vente/addOne', point_vente)
     },
-    checkData(commune, mois, variete, semaine){
-        return API().get('datas/check/'+commune+'/'+mois+'/'+variete+'/'+semaine)
+    checkData(commune, mois, variete, semaine, enqueteur){
+        return API().get('datas/check/'+commune+'/'+mois+'/'+variete+'/'+semaine+'/'+enqueteur)
     },
     addDatas(datas){
         return API().post('datas/add', datas)
     },
-    getData1(commune, mois, semaine){
-        return API().get('datas/get/Quest_O1/'+commune+'/'+mois+'/'+semaine)
+    getData1(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_O1/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
     updateData(datas){
         return API().post('datas/update', datas)
     },
-    getData2(commune, mois, semaine){
-        return API().get('datas/get/Quest_O2/'+commune+'/'+mois+'/'+semaine)
+    getData2(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_O2/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getData3(commune, mois, semaine){
-        return API().get('datas/get/Quest_O3/'+commune+'/'+mois+'/'+semaine)
+    getData3(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_O3/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getData4(commune, mois, semaine){
-        return API().get('datas/get/Quest_HE_S1/'+commune+'/'+mois+'/'+semaine)
+    getData4(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_HE_S1/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getData5(commune, mois, semaine){
-        return API().get('datas/get/Quest_HE_S2/'+commune+'/'+mois+'/'+semaine)
+    getData5(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_HE_S2/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getData6(commune, mois, semaine){
-        return API().get('datas/get/Quest_HE_S3/'+commune+'/'+mois+'/'+semaine)
+    getData6(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_HE_S3/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getData7(commune, mois, semaine){
-        return API().get('datas/get/Quest_HE_S4/'+commune+'/'+mois+'/'+semaine)
+    getData7(commune, mois, semaine, enqueteur){
+        return API().get('datas/get/Quest_HE_S4/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
-    getDataSaisi(quest, commune, mois, semaine){
-        return API().get('datas/get-saisi/'+quest+'/'+commune+'/'+mois+'/'+semaine)
+    getDataSaisi(quest, commune, mois, semaine, enqueteur){
+        return API().get('datas/get-saisi/'+quest+'/'+commune+'/'+mois+'/'+semaine+'/'+enqueteur)
     },
     getAllDataSaisi(){
         return API().get('datas/get-saisi/')
